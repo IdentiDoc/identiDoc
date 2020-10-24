@@ -11,13 +11,11 @@ from fake_backend import *
 app = Flask(__name__)
 api = Api(app)
 
-#Setting the maximum file size allowed: 24MB in this case
+# Setting the maximum file size allowed: 24MB in this case
+app.config['MAX_CONTENT_LENGTH'] = 24 * 1024 * 1024
 
-app.config['MAX_CONTENT_LENGTH'] = 24*1024 * 1024
-
-#List of allowed file extensions
-
-file_extensions=['PDF','PNG','JPG','JPEG','TXT','DOC']
+# List of allowed file extensions
+file_extensions=['PDF','PNG','JPG','JPEG','TXT']
 
 # Resource that will return the result of a query for classification results
 class QueryResult(Resource):
@@ -27,7 +25,7 @@ class QueryResult(Resource):
         result = GetClassificationQueryResults(ClassificationQuery)
         return {"result": result}
 
-#Resource that will upload the given file to the server(local system in this case)        
+# Resource that will upload the given file to the server(local system in this case)        
 class FileUpload(Resource):
     def post(self):
         file=request.files['FILE_NAME']
@@ -39,7 +37,7 @@ class FileUpload(Resource):
                 return{"Unsupported File Format":filename}
 
 
-api.add_resource(QueryResult, "/Query/<string:date>")
+api.add_resource(QueryResult, "/query/<string:date>")
 api.add_resource(FileUpload,"/upload")
 
 if __name__ == "__main__":
