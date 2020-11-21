@@ -1,11 +1,14 @@
 import unittest
 import requests
 
+from identidoc import construct_application
+
 # Unit Tests for the API
 class TestAPI(unittest.TestCase):
     BASE = "http://127.0.0.1:5000/"
 
     def setUp(self):
+        construct_application()
         pass
 
 

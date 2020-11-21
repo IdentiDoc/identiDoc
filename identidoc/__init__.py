@@ -3,7 +3,7 @@
 
 from flask import Flask
 
-import api as identidoc_api
+import identidoc.api as identidoc_api
 
 # Factory method to construct the applicaiton.
 # This should only change when being deployed
