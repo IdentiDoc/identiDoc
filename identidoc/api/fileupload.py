@@ -10,7 +10,7 @@ file_extensions=['PDF','PNG','JPG','JPEG','TXT']
 UPLOAD_PATH = "./uploads"
 
 if not os.path.exists(UPLOAD_PATH):
-        os.makedirs(UPLOAD_PATH)
+    os.makedirs(UPLOAD_PATH)
 
 class FileUpload(Resource):
     def post(self):
@@ -18,7 +18,7 @@ class FileUpload(Resource):
         filename = file.filename
 
         if '.' in filename and filename.rsplit('.', 1)[1].upper() in file_extensions:
-                file.save(os.path.join(UPLOAD_PATH, filename))
-                return{ "Saved as" : filename }
+            file.save(os.path.join(UPLOAD_PATH, filename))
+            return{ "Saved as" : filename }
         else:
-                return{ "Unsupported File Format" : filename }
+            return{ "Unsupported File Format" : filename }

@@ -1,7 +1,7 @@
+from flask_restful import Api
+
 from .fileupload import *
 from .queryresult import *
-
-from flask_restful import Api
 
 def construct_api(app):
     api = Api(app)

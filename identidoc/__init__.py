@@ -3,7 +3,7 @@
 
 from flask import Flask
 
-from identidoc.api import construct_api
+import api as identidoc_api
 
 # Factory method to construct the applicaiton.
 # This should only change when being deployed
@@ -18,11 +18,11 @@ def construct_application(config=None):
     # app.config['UPLOAD_FOLDER'] = './uploads'
 
     # Construct the RESTful API - Check identidoc_api module for this function (in __init__.py)
-    api = construct_api(app)
+    api = identidoc_api.construct_api(app)
 
     return app, api
 
 
 if __name__ == '__main__':
-    app, api = construct_application()
-    app.run(debug=True)     # This value will be false in production
+    identidoc_app, identidoc_api = construct_application()
+    identidoc_app.run(debug=True)     # This value will be false in production

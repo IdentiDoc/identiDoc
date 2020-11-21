@@ -10,3 +10,6 @@ uploads
 
 # Virtual Environment Stuff
 identidoc_venv
+
+# pylint settings
+.pylintrc
