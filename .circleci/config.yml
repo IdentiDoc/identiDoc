@@ -7,7 +7,15 @@ jobs:
       - image: circleci/python:3.8.5
     steps:
       - checkout
-      - run: echo "this is the build job"
+      - run: mkdir test_reports
+      - run:
+          name: Create virtual environment
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            export PYTHONPATH=${VIRTUAL_ENV}/../
+            pip install -r ./requirements/requirements.txt
+
 
 # Orchestrate our job run sequence
 workflows:
