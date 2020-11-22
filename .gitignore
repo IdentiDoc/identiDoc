@@ -1,3 +1,15 @@
+# No need to keep any of the python bytecode stuff
+*.py[cod]
 __pycache__/
+
+# Don't track VS Code files
 .vscode/
+
+# Uploaded files on the local branch don't need to be tracked by git
 uploads/
+
+# Virtual Environment Stuff
+*venv*/
+
+# pylint settings
+.pylintrc
