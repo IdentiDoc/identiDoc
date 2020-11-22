@@ -15,12 +15,4 @@ fi
 
 . identidoc_venv/bin/activate
 
-if [ ! $RESULT -eq 0 ] then
-    echo ERROR IN SETTING UP VIRTUAL ENVIRONMENT
-fi
-
 pip install -r requirements/requirements.txt
-
-if [ ! $RESULT -eq 0 ] then
-    echo ERROR IN SETTING UP VIRTUAL ENVIRONMENT
-fi
