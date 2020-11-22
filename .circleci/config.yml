@@ -22,7 +22,7 @@ jobs:
           name: Run unit tests
           command: |
             mkdir test_reports
-            python -m unittest ./tests/test_api.py
+            python -m unittest tests/test_api.py
             
           
 
