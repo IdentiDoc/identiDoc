@@ -1,24 +1,17 @@
 version: 2.1
 
+# Define the jobs we want to run for this project
 jobs:
-  run_tests:
+  build:
     docker:
-      - image: circleci/python3.8.5
+      - image: circleci/python:3.8.5
     steps:
       - checkout
+      - run: echo "this is the build job"
 
-      - run:
-          name: Install Dependencies
-          command: |
-            echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
-            pip install --user -r ./requirements/requirements.txt
-
-      - run:
-        name: Add To Python PATH
-        command: |
-          export PYTHONPATH=.
-
-      - run:
-        name: Run Unit Tests
-        command: |
-          python -m unittest ./tests/test_api.py
+# Orchestrate our job run sequence
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      
