@@ -1,4 +1,11 @@
 # Development environment setup for identiDoc.
+#
+# TO RUN THE SCRIPT:
+# . setup_env.sh
+#
+# Ensure that the virtual environment is running - It will be indicated in the terminal
+# Run identiDoc with the command
+# python identidoc/__init__.py
 
 # Install venv
 sudo apt install python3-venv
