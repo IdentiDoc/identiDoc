@@ -15,6 +15,7 @@ jobs:
             . venv/bin/activate
             export PYTHONPATH=${VIRTUAL_ENV}/../
             pip install -r ./requirements/requirements.txt
+            
 
 
 # Orchestrate our job run sequence
