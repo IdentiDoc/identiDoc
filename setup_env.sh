@@ -8,7 +8,7 @@ if [ ! -d "./identidoc_venv" ]
 then
     echo 'No Virtual Environment Detected'
     python3 -m venv identidoc_venv
-    echo 'PYTHONPATH=${VIRTUAL_ENV}/../' >> identidoc_venv/bin/activate
+    echo '\nexport PYTHONPATH=${VIRTUAL_ENV}/../\n' >> identidoc_venv/bin/activate
 else
     echo 'Virtual Environment Detected'
 fi
