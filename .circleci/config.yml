@@ -7,7 +7,8 @@ jobs:
       - image: circleci/python:3.8.5
     steps:
       - checkout
-      - run: mkdir test_reports
+
+      # Setting up the environment necessary for identiDoc to run
       - run:
           name: Create virtual environment
           command: |
@@ -15,7 +16,16 @@ jobs:
             . venv/bin/activate
             export PYTHONPATH=${VIRTUAL_ENV}/../
             pip install -r ./requirements/requirements.txt
+      
+      # Running the unit tests
+      - run:
+          name: Run unit tests
+          command: |
+            mkdir test_reports
+            python -m unittest ./tests/test_api.py
             
+          
+
 
 
 # Orchestrate our job run sequence
