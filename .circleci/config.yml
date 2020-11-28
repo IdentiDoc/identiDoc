@@ -24,7 +24,7 @@ jobs:
           # TODO - Generate coverage reports and run all future unit tests
           name: Run unit tests
           command: |
-            . venv/bin/activate
+            . identidoc_venv/bin/activate
             mkdir test_reports
             python -m unittest tests/test_api.py
 
