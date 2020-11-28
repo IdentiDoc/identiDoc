@@ -7,7 +7,7 @@ from flask_restful import Resource, request
 # List of allowed file extensions
 file_extensions=['PDF','PNG','JPG','JPEG','TXT']
 
-UPLOAD_PATH = "./uploads"
+UPLOAD_PATH = os.environ.get('IDENTIDOC_UPLOAD_PATH')
 
 if not os.path.exists(UPLOAD_PATH):
     os.makedirs(UPLOAD_PATH)

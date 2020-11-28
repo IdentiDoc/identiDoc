@@ -5,9 +5,6 @@ __pycache__/
 # Don't track VS Code files
 .vscode/
 
-# Uploaded files on the local branch don't need to be tracked by git
-uploads/
-
 # Virtual Environment Stuff
 *venv*/
 
