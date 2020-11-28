@@ -18,10 +18,7 @@ jobs:
       - run:
           name: Create virtual environment
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            export PYTHONPATH=${VIRTUAL_ENV}/../
-            pip install --no-cache-dir -r ./requirements/requirements.txt
+            . setup_env.sh
 
       - run:
           # TODO - Generate coverage reports and run all future unit tests
