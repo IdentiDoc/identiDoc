@@ -15,11 +15,14 @@ if [ ! -d "./identidoc_venv" ]
 then
     echo 'No Virtual Environment Detected'
     python3 -m venv identidoc_venv
+    echo -e 'export PYTHONPATH=${VIRTUAL_ENV}/../\n' >> identidoc_venv/bin/activate
+    echo -e 'export UPLOAD_PATH=${HOME}/identidoc_uploads/' >> identidoc_venv/bin/activate
+
 else
     echo 'Virtual Environment Detected'
 fi
 
-echo -e 'export PYTHONPATH=${VIRTUAL_ENV}/../\n' >> identidoc_venv/bin/activate
+
 
 . identidoc_venv/bin/activate
 
