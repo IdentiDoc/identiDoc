@@ -7,12 +7,8 @@ import identidoc.api as identidoc_api
 
 app = Flask(__name__)
 
-# Set the application configurations
-# 24 MB
-#
-# Current issue: Not doing anything. TODO - ensure they're doing something.
-# app.config['MAX_CONTENT_LENGTH'] = 24 * 1024 * 1024
-# app.config['UPLOAD_FOLDER'] = './uploads'
+# Set the file upload size to 25 MB
+app.config['MAX_CONTENT_LENGTH'] = 24 * 1024 * 1024
 
 # Construct the RESTful API - Check identidoc_api module for this function (in __init__.py)
 identidoc_api.construct_api(app)
