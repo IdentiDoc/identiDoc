@@ -6,7 +6,7 @@ $('#uploadForm').submit(function(e) {
     formData.append('FILE_NAME', file);
   
     $.ajax({
-      url: 'http://127.0.0.1:5000/upload',
+      url: '/upload',
       dataType: 'json',
       data: formData,
       processData: false,
