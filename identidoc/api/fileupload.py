@@ -2,11 +2,12 @@
 
 import os
 from datetime import datetime
+from flask import abort
 from flask_restful import Resource, request
 from werkzeug.utils import secure_filename
 
 # List of allowed file extensions
-file_extensions=['PDF','PNG','JPG','JPEG','TXT']
+file_extensions=['PDF','PNG','JPG','JPEG','TXT','HEIC']
 
 UPLOAD_PATH = os.environ.get('UPLOAD_PATH','./identidoc_uploads')
 
@@ -23,9 +24,10 @@ class FileUpload(Resource):
             filename = self.add_timestamp(filename)
             file.save(os.path.join(UPLOAD_PATH, filename))
             
-            return { "Saved as" : filename }
+            return { 'message' : 'File successfully uploaded'}
         else:
-            return { "Unsupported File Format" : filename }
+            abort(400)
+            return { 'message' : 'Unsupported file format'}
 
     @staticmethod
     def valid_filename(filename):
