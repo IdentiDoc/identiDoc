@@ -44,9 +44,9 @@ class TestAPI(unittest.TestCase):
     @ignore_resource_warnings
     def test_file_upload_functional(self):
         # Just testing the upload of 3 test files
-        resp1 = self.post_file('./files_to_upload/file1.txt')
-        resp2 = self.post_file('./files_to_upload/file2.txt')
-        resp3 = self.post_file('./files_to_upload/file3.txt')
+        resp1 = self.post_file('./tests/files_to_upload/file1.txt')
+        resp2 = self.post_file('./tests/files_to_upload/file2.txt')
+        resp3 = self.post_file('./tests/files_to_upload/file3.txt')
 
         self.assertEqual(resp1.status_code, 200)
         self.assertEqual(resp2.status_code, 200)
@@ -55,11 +55,11 @@ class TestAPI(unittest.TestCase):
     
     @ignore_resource_warnings
     def test_file_upload_all_valid_file_types(self):
-        resp_heic = self.post_file('./files_to_upload/example.heic')
-        resp_jpeg = self.post_file('./files_to_upload/example.jpeg')
-        resp_jpg = self.post_file('./files_to_upload/example.jpg')
-        resp_pdf = self.post_file('./files_to_upload/example.pdf')
-        resp_png = self.post_file('./files_to_upload/example.png')
+        resp_heic = self.post_file('./tests/files_to_upload/example.heic')
+        resp_jpeg = self.post_file('./tests/files_to_upload/example.jpeg')
+        resp_jpg = self.post_file('./tests/files_to_upload/example.jpg')
+        resp_pdf = self.post_file('./tests/files_to_upload/example.pdf')
+        resp_png = self.post_file('./tests/files_to_upload/example.png')
 
         self.assertEqual(resp_heic.status_code, 200)
         self.assertEqual(resp_jpeg.status_code, 200)
@@ -70,9 +70,9 @@ class TestAPI(unittest.TestCase):
 
     @ignore_resource_warnings
     def test_file_upload_invalid_file_types(self):
-        resp_invalid1 = self.post_file('./files_to_upload/invalid.bmp')
-        resp_invalid2 = self.post_file('./files_to_upload/invalid.mp4')
-        resp_invalid3 = self.post_file('./files_to_upload/invalid.ABC')
+        resp_invalid1 = self.post_file('./tests/files_to_upload/invalid.bmp')
+        resp_invalid2 = self.post_file('./tests/files_to_upload/invalid.mp4')
+        resp_invalid3 = self.post_file('./tests/files_to_upload/invalid.ABC')
 
         self.assertEqual(resp_invalid1.status_code, 400)
         self.assertEqual(resp_invalid2.status_code, 400)
@@ -85,8 +85,8 @@ class TestAPI(unittest.TestCase):
 
     @ignore_resource_warnings
     def test_file_upload_file_too_large(self):
-        resp_large1 = self.post_file('./files_to_upload/large.pdf')
-        resp_large2 = self.post_file('./files_to_upload/large.png')
+        resp_large1 = self.post_file('./tests/files_to_upload/large.pdf')
+        resp_large2 = self.post_file('./tests/files_to_upload/large.png')
 
         self.assertEqual(resp_large1.status_code, 413)
         self.assertEqual(resp_large2.status_code, 413)
