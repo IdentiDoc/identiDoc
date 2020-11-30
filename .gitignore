@@ -10,3 +10,7 @@ __pycache__/
 
 # pylint settings
 .pylintrc
+
+# Coverage
+.coverage
+htmlcov/
