@@ -30,7 +30,7 @@ jobs:
 
 # Orchestrate our job run sequence
 workflows:
-  build_and_test:
+  Build and Test:
     jobs:
       - build
       
