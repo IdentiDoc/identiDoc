@@ -13,10 +13,10 @@ $('#uploadForm').submit(function(e) {
       contentType: false,
       type: "POST",
       success: function(data) {
-        alert('SUCCESS');
+        alert(data.message);
       },
       error: function(data) {
-        alert('ERROR');
+        alert(data.responseJSON.message);
       }
     });  
 });
