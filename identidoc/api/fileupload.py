@@ -2,7 +2,6 @@
 
 import os
 from datetime import datetime
-from flask import abort
 from flask_restful import Resource, request
 from werkzeug.utils import secure_filename
 
@@ -24,10 +23,9 @@ class FileUpload(Resource):
             filename = self.add_timestamp(filename)
             file.save(os.path.join(UPLOAD_PATH, filename))
             
-            return { 'message' : 'File successfully uploaded'}
+            return { 'message' : 'File successfully uploaded.' }
         else:
-            abort(400)
-            return { 'message' : 'Unsupported file format'}
+            return { 'message' : 'Unsupported file format.' }, 400
 
     @staticmethod
     def valid_filename(filename):
