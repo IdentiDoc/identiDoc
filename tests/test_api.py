@@ -1,13 +1,13 @@
 import unittest
 
-from identidoc import construct_application
+from identidoc import app
 
 # Unit Tests for the API
 class TestAPI(unittest.TestCase):
 
     # This is the setup funciton for the unit tests
     def setUp(self):
-        self.app = construct_application(config='TEST')
+        self.app = app
         self.app.testing = True
         self.test_client = self.app.test_client()
 

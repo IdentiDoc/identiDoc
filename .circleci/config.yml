@@ -18,22 +18,22 @@ jobs:
       - run:
           name: Create virtual environment
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            export PYTHONPATH=${VIRTUAL_ENV}/../
-            pip install --no-cache-dir -r ./requirements/requirements.txt
+            . setup_env.sh
 
       - run:
           # TODO - Generate coverage reports and run all future unit tests
           name: Run unit tests
           command: |
-            . venv/bin/activate
-            mkdir test_reports
-            python -m unittest tests/test_api.py
+            . identidoc_venv/bin/activate
+            coverage run -m unittest discover
+            coverage report > coverage.txt
+      - store_artifacts:
+          path: coverage.txt
+
 
 # Orchestrate our job run sequence
 workflows:
-  build_and_test:
+  Build and Test:
     jobs:
       - build
       

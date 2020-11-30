@@ -1,0 +1,9 @@
+[run]
+omit = 
+    # Virtual environment
+    identidoc_venv/*
+
+    # Don't report unittests in this directory
+    tests/*
+
+

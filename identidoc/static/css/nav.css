@@ -1,0 +1,27 @@
+*{
+    border:0;
+    padding:0;
+    margin:0;
+    /* border-width: 1px;
+    border-style: dotted; */
+}
+#right-nav{
+    width:20%;
+    border-left-style: groove;
+    border-left-width: 2px;
+    height:100vh;
+    position:fixed;
+    right:0;
+}
+
+#right-nav li {
+    text-decoration: none;
+    list-style-type: none;
+    
+}
+
+#right-nav li a{
+    display:block;
+    width: 100%;
+    border-style: solid;
+}
