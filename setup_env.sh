@@ -24,6 +24,6 @@ fi
 
 
 
-. identidoc_venv/bin/activate
+. ${PYTHONPATH}identidoc_venv/bin/activate
 
-pip install -r requirements/requirements.txt
+pip install -r ${PYTHONPATH}requirements/requirements.txt
