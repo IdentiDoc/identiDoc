@@ -31,16 +31,16 @@ jobs:
 
   # Our deployment job
   deploy:
+    docker:
+      - image: circleci/python:3.8.5
     filters:
       branches:
         # Only run deploy when the main branch changes
         only:
           - main
-    
     # Build must have passed
     requires:
       - build
-    
     steps:
       - run:
         name: Run Deployment Script
