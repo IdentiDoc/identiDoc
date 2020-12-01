@@ -15,7 +15,7 @@ if not os.path.exists(UPLOAD_PATH):
 
 class FileUpload(Resource):
     def post(self):
-        file = request.files['FILE_NAME']
+        file = request.files['file']
 
         filename = secure_filename(file.filename)
 

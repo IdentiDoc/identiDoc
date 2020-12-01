@@ -3,7 +3,7 @@ $('#uploadForm').submit(function(e) {
     var formData =new FormData(this);
     var fileInput = document.getElementById('uploadFile');
     var file = fileInput.files[0];
-    formData.append('FILE_NAME', file);
+    formData.append('file', file);
   
     $.ajax({
       url: '/upload',
