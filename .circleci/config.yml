@@ -56,5 +56,5 @@ workflows:
   Deploy:
     jobs:
       - deploy
-      context:
-        - identidoc-context
+    context:
+      - identidoc-context
