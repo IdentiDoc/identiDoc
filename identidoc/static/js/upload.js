@@ -16,7 +16,13 @@ $('#uploadForm').submit(function(e) {
         alert(data.message);
       },
       error: function(data) {
-        alert(data.responseJSON.message);
+        try {
+          alert(data.responseJSON.message);
+        }
+
+        catch(err) {
+          alert(data.statusText)
+        }
       }
     });  
 });
