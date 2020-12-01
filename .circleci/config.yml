@@ -42,6 +42,7 @@ jobs:
     requires:
       - build
     steps:
+      - checkout
       - run:
         name: Run Deployment Script
         command: |
