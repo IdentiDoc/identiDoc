@@ -37,7 +37,7 @@ jobs:
       - run:
           name: Run Deployment Script
           command: |
-            ssh $SSH-USER@$SSH-HOST
+            ssh ${SSH-USER}@${SSH-HOST}
 
 # Orchestrate our job run sequence
 workflows:
