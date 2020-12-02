@@ -9,6 +9,8 @@
 
 # Install venv
 sudo apt install python3-venv
+sudo apt install tesseract-ocr
+# sudo apt install libheif-examples
 
 # Create venv
 if [ ! -d "./identidoc_venv" ] 

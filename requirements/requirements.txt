@@ -2,3 +2,5 @@ Flask==1.1.2
 Flask-RESTful==0.3.8
 requests==2.22.0
 coverage==5.3
+opencv-python==4.4.0.42
+pytesseract==0.3.6
