@@ -33,13 +33,13 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - $SSH-FINGERPRINT
+            - $SSH_FINGERPRINT
       - run:
           name: Run Deployment Script
           command: |
-            echo $SSH-USER
-            echo $SSH-HOST
-            ssh ${SSH-USER}@${SSH-HOST}
+            echo $SSH_USER
+            echo $SSH_HOST
+            ssh ${SSH_USER}@${SSH_HOST}
 
 # Orchestrate our job run sequence
 workflows:
