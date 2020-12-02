@@ -11,6 +11,10 @@ import os
 # arguments - filename: the path to the input file
 # returns - filepath to .txt of extracted text that will be downloaded for the Sprint 4 demonstration.
 def preprocess_file(filename):
+    # .txt files are still valid. They probably shouldn't be?
+    if filename.lower().endswith('.txt'):
+        return filename
+
     image = file_conversion(filename)
     processed_image = image_pre_processing(image)
     extracted_text = tesseract_text_extraction(processed_image)
@@ -54,7 +58,7 @@ def file_conversion(fileName):
     elif fileName.lower().endswith('.pdf'):
         subprocess.call(["pdftoppm", "-png", fileName, "temp"])
         image = cv2.imread("temp-1.png")
-    elif fileName.lower().endswith('.heic'):
+    elif fileName.lower().endswith('.heif'):
         subprocess.call(["heif-convert", fileName, "temp.png"])
         image = cv2.imread("temp.png")
     return image
