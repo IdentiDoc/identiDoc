@@ -3,6 +3,23 @@ import pytesseract
 import json
 import subprocess
 import sys
+import os
+
+
+# This function serves as a wrapper function that handles all preprocessing for the Sprint 4 demonstration
+# TODO - Add another level of wrapper functions in the __init__.py file to handle classification as well
+# arguments - filename: the path to the input file
+# returns - filepath to .txt of extracted text that will be downloaded for the Sprint 4 demonstration.
+def preprocess_file(filename):
+    image = file_conversion(filename)
+    processed_image = image_pre_processing(image)
+    extracted_text = tesseract_text_extraction(processed_image)
+
+    # This returns the abosule filepath to the extracted text.
+    return save_text_to_file(extracted_text)
+
+
+
 
 # This function performs pre-processiong on the image file provided
 def image_pre_processing(image):
@@ -12,6 +29,7 @@ def image_pre_processing(image):
     final_image= cv2.threshold(gray_image,0,255,cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
     return final_image
 
+
 # This function extracts text from the pre-processed image
 def tesseract_text_extraction(image):
     tesseract_config = r'--oem 3 --psm 6'
@@ -19,10 +37,15 @@ def tesseract_text_extraction(image):
     extracted_text= pytesseract.image_to_string(image, output_type=pytesseract.Output.DICT, config=tesseract_config, lang='eng')
     return extracted_text
 
+
 #This function writes the extracted text to a file
 def save_text_to_file(extracted_text):
     with open('UTA_form.txt', 'w', newline="") as file:
-        file.write(json.dumps(extracted_text))
+        #file.write(json.dumps(extracted_text))
+        file.write(extracted_text['text'])  # Made this adjustment just for now
+    
+    return os.path.abspath('UTA_form.txt')
+
 
 #This function converts the input file to .png
 def file_conversion(fileName):
@@ -35,6 +58,7 @@ def file_conversion(fileName):
         subprocess.call(["heif-convert", fileName, "temp.png"])
         image = cv2.imread("temp.png")
     return image
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:
