@@ -39,9 +39,7 @@ jobs:
           command: |
             echo $SSH_USER
             echo $SSH_HOST
-            ssh -oStrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST}
-            ./deploy_identidoc.sh
-            exit
+            ssh -oStrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} "./deploy_identidoc.sh"
 
 # Orchestrate our job run sequence
 workflows:
