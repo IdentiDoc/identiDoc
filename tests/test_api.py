@@ -55,13 +55,13 @@ class TestAPI(unittest.TestCase):
     
     @ignore_resource_warnings
     def test_file_upload_all_valid_file_types(self):
-        resp_heic = self.post_file('./tests/files_to_upload/example.heic')
+        #resp_heic = self.post_file('./tests/files_to_upload/example.heic')
         resp_jpeg = self.post_file('./tests/files_to_upload/example.jpeg')
         resp_jpg = self.post_file('./tests/files_to_upload/example.jpg')
         resp_pdf = self.post_file('./tests/files_to_upload/example.pdf')
         resp_png = self.post_file('./tests/files_to_upload/example.png')
 
-        self.assertEqual(resp_heic.status_code, 200)
+        #self.assertEqual(resp_heic.status_code, 200)
         self.assertEqual(resp_jpeg.status_code, 200)
         self.assertEqual(resp_jpg.status_code, 200)
         self.assertEqual(resp_pdf.status_code, 200)

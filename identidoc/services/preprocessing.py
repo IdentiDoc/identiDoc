@@ -58,9 +58,9 @@ def file_conversion(fileName):
     elif fileName.lower().endswith('.pdf'):
         subprocess.call(["pdftoppm", "-png", fileName, "temp"])
         image = cv2.imread("temp-1.png")
-    elif fileName.lower().endswith('.heic'):
-        subprocess.call(["heif-convert", fileName, "temp.png"])
-        image = cv2.imread("temp.png")
+    #elif fileName.lower().endswith('.heic'):
+        #subprocess.call(["heif-convert", fileName, "temp.png"])
+        #image = cv2.imread("temp.png")
     return image
 
 
