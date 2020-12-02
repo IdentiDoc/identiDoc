@@ -37,8 +37,8 @@ jobs:
       - run:
           name: Run Deployment Script
           command: |
-            echo ${SSH-USER}
-            echo ${SSH-HOST}
+            echo $SSH-USER
+            echo $SSH-HOST
             ssh ${SSH-USER}@${SSH-HOST}
 
 # Orchestrate our job run sequence
@@ -47,8 +47,7 @@ workflows:
     jobs:
       - test
       - deploy:
-          context:
-          - identidoc-context
+          context: identidoc-context
           filters:
             branches:
               only:
