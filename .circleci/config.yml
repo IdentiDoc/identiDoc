@@ -15,27 +15,29 @@ jobs:
       - checkout
       # Setting up the environment necessary for identiDoc to run
       - run:
-          name: Create Virtual Environment
-          command: |
-            . setup_env.sh
+        name: Create Virtual Environment
+        command: |
+          . setup_env.sh
       - run:
-          name: Run Unit Tests
-          command: |
-            . identidoc_venv/bin/activate
-            coverage run -m unittest discover
-            coverage report > coverage.txt
+        name: Run Unit Tests
+        command: |
+          . identidoc_venv/bin/activate
+          coverage run -m unittest discover
+          coverage report > coverage.txt
       - store_artifacts:
-          path: coverage.txt
+        path: coverage.txt
   # Our deployment job
   deploy:
     docker:
       - image: circleci/python:3.8.5
     steps:
-      - checkout
+      - add_ssh_keys:
+        fingerprints:
+          $SSH-FINGERPRINT
       - run:
-          name: Run Deployment Script
-          command: |
-            ssh -oStrictHostKeyChecking=no -v $SSH-USER@$SSH-HOST "./deploy_identidoc.sh"
+        name: Run Deployment Script
+        command: |
+          ssh $SSH-USER@$SSH-HOST
 
 # Orchestrate our job run sequence
 workflows:
@@ -43,11 +45,11 @@ workflows:
     jobs:
       - test
       - deploy:
-          context:
-          - identidoc-context
-          filters:
-            branches:
-              only:
-                - main
-          requires:
-            - test
+        context:
+        - identidoc-context
+        filters:
+          branches:
+            only:
+              - main
+        requires:
+          - test
