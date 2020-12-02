@@ -9,6 +9,9 @@
 
 # Install venv
 sudo apt install python3-venv
+sudo apt install tesseract-ocr
+sudo apt install libheif-examples
+sudo apt install poppler-utils
 
 # Create venv
 if [ ! -d "./identidoc_venv" ] 

@@ -7,13 +7,24 @@ $('#uploadForm').submit(function(e) {
   
     $.ajax({
       url: '/upload',
-      dataType: 'json',
       data: formData,
       processData: false,
       contentType: false,
       type: "POST",
       success: function(data) {
-        alert(data.message);
+        alert('Text extracted successfully!');
+
+        var blob = new Blob([data], {type: 'text/plain'});
+        
+        
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'extracted_text.txt';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
       },
       error: function(data) {
         try {

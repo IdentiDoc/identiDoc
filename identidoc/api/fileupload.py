@@ -2,8 +2,11 @@
 
 import os
 from datetime import datetime
+from flask import send_file
 from flask_restful import Resource, request
 from werkzeug.utils import secure_filename
+
+import identidoc.services
 
 # List of allowed file extensions
 file_extensions=['PDF','PNG','JPG','JPEG','TXT','HEIC']
@@ -17,13 +20,16 @@ class FileUpload(Resource):
     def post(self):
         file = request.files['file']
 
-        filename = secure_filename(file.filename)
+        orig_filename = secure_filename(file.filename)
 
-        if self.valid_filename(filename):
-            filename = self.add_timestamp(filename)
-            file.save(os.path.join(UPLOAD_PATH, filename))
+        if self.valid_filename(orig_filename):
+            filename = self.add_timestamp(orig_filename)
+            saved_filepath = os.path.join(UPLOAD_PATH, filename)
+
+            file.save(saved_filepath)
+            extracted_text_filepath = identidoc.services.preprocess_file(saved_filepath)
             
-            return { 'message' : 'File successfully uploaded.' }
+            return send_file(extracted_text_filepath, attachment_filename=orig_filename + '.txt', as_attachment=True)
         else:
             return { 'message' : 'Unsupported file format.' }, 400
 
