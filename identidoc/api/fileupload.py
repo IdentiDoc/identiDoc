@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 import identidoc.services
 
 # List of allowed file extensions
-file_extensions=['PDF','PNG','JPG','JPEG','TXT']
+file_extensions=['PDF','PNG','JPG','JPEG','TXT','HEIC']
 
 UPLOAD_PATH = os.environ.get('UPLOAD_PATH','./identidoc_uploads')
 
