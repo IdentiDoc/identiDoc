@@ -12,6 +12,7 @@ sudo apt install python3-venv
 sudo apt install tesseract-ocr
 sudo apt install libheif-examples
 sudo apt install poppler-utils
+sudo apt install sqlite3 libsqlite3-dev
 
 # Create venv
 if [ ! -d "./identidoc_venv" ] 
