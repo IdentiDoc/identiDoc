@@ -38,12 +38,19 @@ class ClassificationResultTableRow(object):
         except AssertionError:
             self = None
 
+    
+    # Returns a tuple in the necessary form to insert a record into the database
+    def to_tuple(self):
+        return (self.timestamp, self.filename, self.classification, self.has_signature)
+
+
+# The location of the identidoc database - env variable
+identidoc_db = os.environ.get('IDENTIDOC_DB', '')
+
 
 # This function is run while creating the identiDoc program.
 # Ensures that the .db file exists and can be connected to.
 def validate_database():
-    identidoc_db = os.environ.get('IDENTIDOC_DB', '')
-
     if identidoc_db == '':
         return -1
 
@@ -51,8 +58,11 @@ def validate_database():
 
     try:
         conn = sqlite3.connect(identidoc_db)
+
         if create_table(conn) == -1:
+            conn.close()
             return -1
+
         conn.close()
 
     except:
@@ -74,15 +84,39 @@ def create_table(conn):
     try:
         c = conn.cursor()
         c.execute(sql_create_table)
-    except sqlite3.Error as e:
-        print(e)
-        return -1
-
     
+    # Something went wrong, rollback the transaction
+    except sqlite3.Error:
+        conn.rollback()
+        return -1    
 
     conn.commit()
 
     return 0
 
     
+# Inserts a record into the database
+# This function should be the only way to insert a record into the database.
+# Only one record can be inserted at a time since only one file can be classified at a time
+# This command does not return any data from the database to honor CQS (command-query separation)
+#
+# This function returns -1 on any failure and 0 on success
+def insert_record_command(record: ClassificationResultTableRow) -> int:
+    # Make sure that the record is
+    if record is None:
+        return -1
+
+    try:
+        conn = sqlite3.connect(identidoc_db)
+        c = conn.cursor()
+        c.execute('INSERT INTO classifications VALUES ?;', record.to_tuple())
     
+    except sqlite3.Error:
+        conn.rollback()
+        conn.close()
+        return -1
+
+    conn.commit()
+    conn.close()
+
+    return 0
