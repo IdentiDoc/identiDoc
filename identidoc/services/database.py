@@ -6,8 +6,8 @@ import sqlite3
 # A list of ClassificaitonResultTableRows will be returned from a database query
 # A ClassificationResultTableRow will need to be created to insert a database record
 class ClassificationResultTableRow(object):
-    # filename - raw filename from identidoc with timestamp
-    # Example: 04122020164952378563.21-22_Verification_of_Household.pdf
+    # filename - raw filename from identidoc with POSIX timestamp
+    # Example: 1609865062.Class3-2.pdf
     #
     # classification - an integer 0 - 5 inclusive
     # 1 - 5 is a classified document
@@ -25,14 +25,14 @@ class ClassificationResultTableRow(object):
             assert isinstance(has_signature, bool)
 
             # We're going to assume that the filename has already been validated/created through the api,
-            # which it should be. Please don't abuse this privileges
+            # which it should be. Please don't abuse this privilege
             split_filename = filename.split(".", 1)
             assert len(split_filename) == 2
 
-            self.timestamp = split_filename[0]
+            self.timestamp = int(split_filename[0])
             self.filename = split_filename[1]
             self.classification = classification
-            self.has_signature = has_signature
+            self.has_signature = int(has_signature)
 
 
         except AssertionError:
@@ -64,10 +64,11 @@ def validate_database():
 # Helper function to create the db table needed for identidoc
 def create_table(conn):
     sql_create_table = """ CREATE TABLE IF NOT EXISTS classifications (
-                               timestamp text PRIMARY KEY,
+                               timestamp integer NOT NULL,
                                filename text NOT NULL,
                                classification integer NOT NULL,
-                               has_signature integer NOT NULL
+                               has_signature integer NOT NULL,
+                               PRIMARY KEY (timestamp, filename)
                            );"""
 
     try:
