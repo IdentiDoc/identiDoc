@@ -3,7 +3,10 @@
 
 from flask import Flask, render_template
 
+import os
+
 import identidoc.api as identidoc_api
+import identidoc.services
 
 app = Flask(__name__)
 
@@ -12,6 +15,10 @@ app.config['MAX_CONTENT_LENGTH'] = 24 * 1024 * 1024
 
 # Construct the RESTful API - Check identidoc_api module for this function (in __init__.py)
 identidoc_api.construct_api(app)
+
+# Ensure that the application can connect to the database
+identidoc.services.validate_database()
+
 
 @app.route('/')
 def index():

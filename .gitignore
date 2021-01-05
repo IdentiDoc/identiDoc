@@ -14,3 +14,6 @@ __pycache__/
 # Coverage
 .coverage
 htmlcov/
+
+# SQLite db files
+*.db
