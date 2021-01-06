@@ -1,7 +1,6 @@
 # RESTful API Resource for file uploads
 
 import os
-from datetime import timezone, datetime
 from flask import send_file
 from flask_restful import Resource, request
 from werkzeug.utils import secure_filename
@@ -46,7 +45,7 @@ class FileUpload(Resource):
     @staticmethod
     # Updated - Replace this with a standard POSIX timestamp
     def add_timestamp(filename):
-        timestamp = int(datetime.now(tz=timezone.utc).timestamp())
+        timestamp = identidoc.services.get_current_time_as_POSIX_timestamp()
         return str(timestamp) + '.' + filename
 
 

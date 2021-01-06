@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from datetime import datetime
 
 # An object that is equivalent to a database record
 #
@@ -120,3 +121,8 @@ def insert_record_command(record: ClassificationResultTableRow) -> int:
     conn.close()
 
     return 0
+
+
+# This is a generic
+#def get_records_query(classification_date: datetime, filename: str, classification: int, has_signature: bool) -> list[ClassificationResultTableRow]:
+
