@@ -1,6 +1,11 @@
 import os
 import sqlite3
-from datetime import datetime
+import pytz
+
+from datetime import datetime, timedelta, timezone
+from typing import List
+
+import identidoc.services
 
 # An object that is equivalent to a database record
 #
@@ -43,6 +48,71 @@ class ClassificationResultTableRow(object):
     # Returns a tuple in the necessary form to insert a record into the database
     def to_tuple(self):
         return (self.timestamp, self.filename, self.classification, self.has_signature)
+
+
+# This object will handle the query including validation.
+# By design, this object should not be accessed outside of this file
+class ClassificationResultQuery(object):
+    def __init__(self, classification_date, classification, has_signature):
+        try:
+            if classification_date is not None:
+                assert isinstance(classification_date, datetime)
+
+            if classification is not None:
+                assert 0 <= classification and classification <= 5
+            
+            if has_signature is not None:
+                assert isinstance(has_signature, bool)
+
+            self.classification_date = classification_date
+            self.classification = classification
+            self.has_signature = has_signature
+        
+        except AssertionError:
+            self = None
+
+    # returns two POSIX time stamps for the query
+    # The first represents the first second of the
+    # indicated date, the second represents the last
+    # second of the indicated date
+    def generate_date_range(self):
+        orig_date = self.classification_date
+
+        # Just get the day month and year of the date passed in, don't rely on the time being midnight
+        day = orig_date.date.day
+        month = orig_date.date.month
+        year = orig_date.date.month
+
+        # Assume that the datetime object passed in is in Central Time
+        start_date = pytz.timezone('US/Central').localize(datetime(year=year, 
+                                                          month=month,
+                                                          day=day,
+                                                          hour=0,
+                                                          minute=0,
+                                                          second=0,
+                                                          microsecond=0))
+
+        start_date = start_date.astimezone(pytz.timezone('UTC'))
+        end_date = start_date + timedelta(days=1)
+
+        start_date_timestamp = identidoc.services.datetime_to_POSIX_timestamp(start_date)
+        end_date_timestamp = identidoc.services.datetime_to_POSIX_timestamp(end_date)
+
+        return [start_date_timestamp, end_date_timestamp]
+
+    
+    # Member function to generate the query string necessary.
+    # All members of the object were validated in the constructor
+    def generate_query_string(self):
+        query_string = 'SELECT * FROM classifications'
+
+
+
+        if self.classification_date is not None:
+            date_range = self.generate_date_range()
+
+        return query_string + ';'
+            
 
 
 # The location of the identidoc database - env variable
@@ -123,6 +193,17 @@ def insert_record_command(record: ClassificationResultTableRow) -> int:
     return 0
 
 
-# This is a generic
-#def get_records_query(classification_date: datetime, filename: str, classification: int, has_signature: bool) -> list[ClassificationResultTableRow]:
+# This is a generic function to execute the database query to retrieve the records
+# It is assumed that the user will be able to filter by the document's classification date,
+# classification, and whether or not a signiture is present.
+#
+# classification_date: datetime object representing the date - IT IS ASSUMED THAT THIS DATE IS IN CENTRAL TIME ***NOT*** UTC
+# classification: the class of the document in question
+# has_signature: bool value of whether or not a signature is present
+def retrieve_records_query(classification_date: datetime, classification: int, has_signature: bool) -> List[ClassificationResultTableRow]:
+    Query = ClassificationResultQuery(classification_date, classification, has_signature)
 
+    if Query is None:
+        return []
+
+    query_string = Query.generate_query_string()
