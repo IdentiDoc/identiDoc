@@ -5,7 +5,7 @@ import pytz
 from datetime import datetime, timedelta, timezone
 from typing import List
 
-from identidoc.services import datetime_to_POSIX_timestamp
+import identidoc.services
 
 # An object that is equivalent to a database record
 #
@@ -97,8 +97,8 @@ class ClassificationResultQuery(object):
         start_date = start_date.astimezone(pytz.timezone('UTC'))
         end_date = start_date + timedelta(days=1)
 
-        start_date_timestamp = datetime_to_POSIX_timestamp(start_date)
-        end_date_timestamp = datetime_to_POSIX_timestamp(end_date)
+        start_date_timestamp = identidoc.services.datetime_to_POSIX_timestamp(start_date)
+        end_date_timestamp = identidoc.services.datetime_to_POSIX_timestamp(end_date)
 
         return [start_date_timestamp, end_date_timestamp]
 
