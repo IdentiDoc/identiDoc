@@ -102,7 +102,3 @@ class TestAPI(unittest.TestCase):
                 'file' : ( open(filepath, 'rb'), filepath ),
             }
         )
-
-
-if __name__ == '__main__':
-    unittest.main()
