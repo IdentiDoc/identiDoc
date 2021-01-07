@@ -102,7 +102,7 @@ class ClassificationResultQuery(object):
 
         return [start_date_timestamp, end_date_timestamp]
 
-    
+
     # Member function to generate the query string necessary.
     # All members of the object were validated in the constructor
     def generate_query_string(self):
@@ -144,6 +144,22 @@ class ClassificationResultQuery(object):
 
         return query_string + ';'
             
+# The result of the query.
+# Records retrieved from the database are represented by this object
+#
+# Since results are coming from the database, no validation is necessary
+#
+# self.timestamp is a POSIX timestamp. This value will be sent to the frontend
+# and needs to be handled there to disply it to the user in a pretty way
+# self.filename is the filename without the timestamp
+# self.classification is an integer with the class
+# self.has_signature is either a 0 or a 1 (0 is false, 1 is true). This is an integer
+class QueryResultRow(object):
+    def __init__(self, record_tuple):
+        self.timestamp = record_tuple[0]
+        self.filename = record_tuple[1]
+        self.classification = record_tuple[2]
+        self.has_signature = record_tuple[3]
 
 
 # The location of the identidoc database - env variable
@@ -231,10 +247,31 @@ def insert_record_command(record: ClassificationResultTableRow) -> int:
 # classification_date: datetime object representing the date - IT IS ASSUMED THAT THIS DATE IS IN CENTRAL TIME ***NOT*** UTC
 # classification: the class of the document in question
 # has_signature: bool value of whether or not a signature is present
-def retrieve_records_query(classification_date: datetime, classification: int, has_signature: bool) -> List[ClassificationResultTableRow]:
+#
+# This function will return an empty list on error. NO ERROR MESSAGE WILL BE GIVEN FOR SECURITY PURPOSES
+# On a non-error, this function will return a list of zero or more QueryResultRows
+def retrieve_records_query(classification_date: datetime, classification: int, has_signature: bool) -> List[QueryResultRow]:
     Query = ClassificationResultQuery(classification_date, classification, has_signature)
 
     if Query is None:
         return []
 
     query_string = Query.generate_query_string()
+
+    try:
+        conn = sqlite3.connect(identidoc_db)
+        c = conn.cursor()
+        c.execute(query_string)
+    
+    except sqlite3.Error:
+        conn.close()
+        return []
+
+    query_results = c.fetchall()
+
+    query_result_list = []
+
+    for record_tuple in query_results:
+        query_result_list.append(QueryResultRow(record_tuple))
+
+    return query_results
