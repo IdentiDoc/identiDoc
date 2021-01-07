@@ -83,14 +83,16 @@ class ClassificationResultQuery(object):
         month = orig_date.date.month
         year = orig_date.date.month
 
+        central = pytz.timezone('US/Central')
+
         # Assume that the datetime object passed in is in Central Time
-        start_date = pytz.timezone('US/Central').localize(datetime(year=year, 
-                                                          month=month,
-                                                          day=day,
-                                                          hour=0,
-                                                          minute=0,
-                                                          second=0,
-                                                          microsecond=0))
+        start_date = central.localize(datetime(year=year,
+                                               month=month,
+                                               day=day,
+                                               hour=0,
+                                               minute=0,
+                                               second=0,
+                                               microsecond=0))
 
         start_date = start_date.astimezone(pytz.timezone('UTC'))
         end_date = start_date + timedelta(days=1)
@@ -106,10 +108,39 @@ class ClassificationResultQuery(object):
     def generate_query_string(self):
         query_string = 'SELECT * FROM classifications'
 
-
+        previous_clause = False
 
         if self.classification_date is not None:
             date_range = self.generate_date_range()
+
+            query_string += ' WHERE ' + str(date_range[0]) + ' <=  timestamp AND timestamp < ' + str(date_range[1])
+
+            previous_clause = True
+
+        
+        if self.classification is not None:
+            if previous_clause:
+                query_string += ' AND '
+            else:
+                query_string += ' WHERE '
+            
+            query_string += 'classification = ' + str(self.classification)
+
+            previous_clause = True
+
+        
+        if self.has_signature is not None:
+            if previous_clause:
+                query_string += ' AND '
+            else:
+                query_string += ' WHERE '
+
+            value = 0
+            if self.has_signature:
+                value = 1
+
+            query_string += 'has_signature = ' + str(value)
+
 
         return query_string + ';'
             
