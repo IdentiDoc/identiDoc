@@ -184,5 +184,8 @@ class TestDB(unittest.TestCase):
         invalid_query = ClassificationResultQuery(day_two, '3', True)
         assert invalid_query.generate_query_string() == None
 
+        no_constraint_query = ClassificationResultQuery(None, None, None)
+        assert no_constraint_query.generate_query_string() == 'SELECT * FROM classifications;'
+
     def tearDown(self):
         pass
