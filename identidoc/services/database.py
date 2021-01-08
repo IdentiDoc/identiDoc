@@ -279,11 +279,11 @@ def retrieve_records_query(classification_date: datetime, classification: int, h
         conn.close()
         return []
 
-    query_results = c.fetchall()
+    query_result = c.fetchall()
 
     query_result_list = []
 
-    for record_tuple in query_results:
+    for record_tuple in query_result:
         query_result_list.append(QueryResultRow(record_tuple))
 
-    return query_results
+    return query_result_list

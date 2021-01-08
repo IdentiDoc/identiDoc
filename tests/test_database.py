@@ -260,6 +260,113 @@ class TestDB(unittest.TestCase):
         assert result_row_2.filename == 'file.png'
         assert result_row_2.classification == 2
         assert result_row_2.has_signature == 1
+    
+
+    # Testing a basic query - have to insert records into the database to start
+    def test_retrieve_records_query_single_record(self):
+        # Insert a record into the database and ensure the transaction is successful
+        # if this assert statement fails, we have much larger issues than this unit test
+        valid_table_row = ClassificationResultTableRow('1610121696.this.is.a.valid.filename.pdf', 1, False)
+        assert insert_record_command(valid_table_row) == 0
+
+        # Execute the basic query and validate it returns the one record inserted in the database
+        query_result_1 = retrieve_records_query(None, None, None)
+
+        assert len(query_result_1) == 1
+        assert query_result_1[0].classification == 1
+        assert query_result_1[0].filename == 'this.is.a.valid.filename.pdf'
+        assert query_result_1[0].has_signature == 0
+        assert query_result_1[0].timestamp == 1610121696
+
+        date_file_was_uploaded = datetime(2021, 1, 8)
+        date_file_was_not_uploaded = datetime(2000, 1, 1)
+
+        # Query based on date
+        query_result_2 = retrieve_records_query(date_file_was_uploaded, None, None)
+        query_result_3 = retrieve_records_query(date_file_was_not_uploaded, None, None)
+
+        assert len(query_result_2) == 1
+        assert len(query_result_3) == 0
+
+        # Query based on classification
+        query_result_4 = retrieve_records_query(None, 1, None)
+        query_result_5 = retrieve_records_query(None, 0, None)
+
+        assert len(query_result_4) == 1
+        assert len(query_result_5) == 0
+
+        # Query based on signature
+        query_result_6 = retrieve_records_query(None, None, False)
+        query_result_7 = retrieve_records_query(None, None, True)
+
+        assert len(query_result_6) == 1
+        assert len(query_result_7) == 0
+
+
+        # Query with multiple clauses
+
+        # These query results should return the value
+        query_result_8 = retrieve_records_query(date_file_was_uploaded, 1, None)
+        query_result_9 = retrieve_records_query(date_file_was_uploaded, None, False)
+        query_result_10 = retrieve_records_query(None, 1, False)
+        query_result_11 = retrieve_records_query(date_file_was_uploaded, 1, False)
+
+        assert len(query_result_8) == 1
+        assert len(query_result_9) == 1
+        assert len(query_result_10) == 1
+        assert len(query_result_11) == 1
+
+        # These query results should not return the value
+        query_result_12 = retrieve_records_query(date_file_was_uploaded, 0, None)
+        query_result_13 = retrieve_records_query(date_file_was_uploaded, 1, True)
+        query_result_14 = retrieve_records_query(date_file_was_uploaded, None, True)
+        query_result_15 = retrieve_records_query(None, 1, True)
+
+        assert len(query_result_12) == 0
+        assert len(query_result_13) == 0
+        assert len(query_result_14) == 0
+        assert len(query_result_15) == 0
+    
+
+    def test_retrieve_records_query_multiple_records(self):
+        self.create_database_configuration_one()
+
+        date = datetime(2020, 9, 21)
+
+        query_result_1 = retrieve_records_query(date, None, None)
+        assert len(query_result_1) == 240
+
+        for classification_num in range(6):
+            for has_signature in [True, False]:
+                query_no_date = retrieve_records_query(None, classification_num, has_signature)
+                query_date = retrieve_records_query(date, classification_num, has_signature)
+
+                assert len(query_no_date) == 20
+                assert len(query_date) == 20
+    
+
+    # Ensure the timezone conversion works correctly
+    def test_retrieve_records_query_tricky_timestamps_1(self):
+        assert insert_record_command(ClassificationResultTableRow('1600664399.test.pdf', 5, True)) == 0 # 9/20/2020 11:59:59 PM CST
+        assert insert_record_command(ClassificationResultTableRow('1600664400.test.pdf', 5, True)) == 0 # 9/21/2020 12:00:00 AM CST
+
+        date = datetime(2020, 9, 21)
+
+        query_result = retrieve_records_query(date, None, None)
+
+        assert len(query_result) == 1
+
+    
+    def test_retrieve_records_query_tricky_timestamps_2(self):
+        assert insert_record_command(ClassificationResultTableRow('1600750799.test.pdf', 5, True)) == 0 # 9/21/2020 11:59:59 PM CST
+        assert insert_record_command(ClassificationResultTableRow('1600750800.test.pdf', 5, True)) == 0 # 9/22/2020 12:00:00 AM CST
+
+        date = datetime(2020, 9, 21)
+
+        query_result = retrieve_records_query(date, None, None)
+
+        assert len(query_result) == 1
+
 
 
     # Called at the conclusion of every unit test.
@@ -273,3 +380,22 @@ class TestDB(unittest.TestCase):
         c.execute(sql_delete_records)
         conn.commit()
         conn.close()
+
+    
+    ####################
+    #                  #
+    # HELPER FUNCTIONS #
+    #                  #
+    ####################
+
+    # This is a simple database configuration with 240 records
+    #
+    # All records were "uploaded/created" on 9/21/2020
+    # 120 records have signatures (20 of each classification 0-6)
+    # 120 records don't have signatures (20 of each classification 0-6)
+    def create_database_configuration_one(self):
+        for record_num in range(120):
+            insert_record_command(ClassificationResultTableRow(str(1600680600 + record_num) + '.signature.pdf', record_num % 6, True))
+
+        for record_num in range(120):
+            insert_record_command(ClassificationResultTableRow(str(1600684200 + record_num) + '.no_signature.pdf', record_num % 6, False))
