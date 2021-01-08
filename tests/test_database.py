@@ -3,6 +3,8 @@
 import unittest
 import sqlite3
 
+from datetime import datetime
+
 from identidoc.services.database import ClassificationResultTableRow, ClassificationResultQuery, QueryResultRow, insert_record_command, retrieve_records_query, validate_database, identidoc_db
 
 class TestDB(unittest.TestCase):
@@ -99,6 +101,77 @@ class TestDB(unittest.TestCase):
         assert valid_obj_1.to_tuple() == (1610121696, 'file.png', 0, False)
         assert valid_obj_2.to_tuple() == (1610121696, 'this.is.a.valid.filename.pdf', 1, False)
         assert valid_obj_3.to_tuple() == (1610124814, 'file.png', 2, True)
+
+    
+    # Test Query Validation
+    def test_ClassificationResultQuery_constructor(self):
+        datetime_one = datetime.now()
+        datetime_two = datetime(2021, 1, 1, 0, 0, 0, 0)
+        datetime_three = datetime(2021, 5, 15, 12, 0, 0, 0)
+
+        # The query object doesn't have to have all fields filled in
+        no_date = ClassificationResultQuery(None, 3, True)
+        no_classification = ClassificationResultQuery(datetime_one, None, False)
+        no_signature = ClassificationResultQuery(datetime_two, 0, None)
+        no_constraints = ClassificationResultQuery(None, None, None)
+
+        assert not no_date.is_invalid
+        assert not no_classification.is_invalid
+        assert not no_signature.is_invalid
+        assert not no_constraints.is_invalid
+
+        wrong_data_type_1 = ClassificationResultQuery(2, 1, True)
+        wrong_data_type_2 = ClassificationResultQuery(datetime_three, '3', False)
+        wrong_data_type_3 = ClassificationResultQuery(datetime_one, 2, 'True')
+
+        assert wrong_data_type_1.is_invalid
+        assert wrong_data_type_2.is_invalid
+        assert wrong_data_type_3.is_invalid
+
+        out_of_class_range_1 = ClassificationResultQuery(datetime_one, -1, True)
+        out_of_class_range_2 = ClassificationResultQuery(datetime_one, 6, True)
+        out_of_class_range_3 = ClassificationResultQuery(datetime_one, 27, True)
+        out_of_class_range_4 = ClassificationResultQuery(datetime_one, -14165, True)
+
+        assert out_of_class_range_1.is_invalid
+        assert out_of_class_range_2.is_invalid
+        assert out_of_class_range_3.is_invalid
+        assert out_of_class_range_4.is_invalid
+
+
+        valid_query_1 = ClassificationResultQuery(datetime_one, 5, True)
+        valid_query_2 = ClassificationResultQuery(datetime_two, 2, False)
+        valid_query_3 = ClassificationResultQuery(datetime_three, 0, True)
+
+        assert not valid_query_1.is_invalid
+        assert not valid_query_2.is_invalid
+        assert not valid_query_3.is_invalid
+
+    
+    # Test that the date range conversion is working correctly. This is a little tricky
+    # A date is passed in (Assume this date is in Central time)
+    # A list of two integers (POSIX timestamps) is returned.
+    # The first timestamp represents midnight (CST) of the day passed in
+    # The second timestamp represents midnight (CST) of the next day
+    # NOTE - POSIX timestamps are in UTC and this must be handled appropriately
+    def test_ClassificationResultQuery_generate_date_range(self):
+        day_one = datetime(2020, 9, 21)     # Daylight Savings
+        day_two = datetime(2020, 11, 22)    # No Daylight Savings
+        day_thee = datetime(2020, 12, 31)   # This testcase will require rollover for day, month and year
+
+        # This query is invalid and will return None when generate_date_range() is called
+        invalid_query = ClassificationResultQuery(day_two, '3', True)
+        assert invalid_query.generate_date_range() == None
+
+        query_1 = ClassificationResultQuery(day_one, 3, True)
+        query_2 = ClassificationResultQuery(day_two, 0, False)
+        query_3 = ClassificationResultQuery(day_thee, 4, False)
+
+        # Values generated using online Epoch calculator.
+        # MIDNIGHT CST
+        assert query_1.generate_date_range() == [1600664400, 1600750800]
+        assert query_2.generate_date_range() == [1606024800, 1606111200]
+        assert query_3.generate_date_range() == [1609394400, 1609480800]
 
 
     def tearDown(self):

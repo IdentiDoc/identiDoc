@@ -63,6 +63,7 @@ class ClassificationResultQuery(object):
                 assert isinstance(classification_date, datetime)
 
             if classification is not None:
+                assert isinstance(classification, int)
                 assert 0 <= classification and classification <= 5
             
             if has_signature is not None:
@@ -87,9 +88,9 @@ class ClassificationResultQuery(object):
         orig_date = self.classification_date
 
         # Just get the day month and year of the date passed in, don't rely on the time being midnight
-        day = orig_date.date.day
-        month = orig_date.date.month
-        year = orig_date.date.month
+        day = orig_date.day
+        month = orig_date.month
+        year = orig_date.year
 
         central = pytz.timezone('US/Central')
 
