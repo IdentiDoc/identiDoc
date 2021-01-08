@@ -243,6 +243,24 @@ class TestDB(unittest.TestCase):
         assert len(results) == 1
         assert results[0] == (1610121696, 'this.is.a.valid.filename.pdf', 1, 0)
 
+    
+    # This object should only be accessed from within the database file, and should only hold
+    # data that comes from the database, which has already been validated when it was put into the
+    # database. No built in validation, and it can be assumed that it is always valid
+    def test_QueryResultRow(self):
+        result_row_1 = QueryResultRow((1610121696, 'this.is.a.valid.filename.pdf', 1, 0))
+        result_row_2 = QueryResultRow((1610124814, 'file.png', 2, 1))
+        
+        assert result_row_1.timestamp == 1610121696
+        assert result_row_1.filename == 'this.is.a.valid.filename.pdf'
+        assert result_row_1.classification == 1
+        assert result_row_1.has_signature == 0
+
+        assert result_row_2.timestamp == 1610124814
+        assert result_row_2.filename == 'file.png'
+        assert result_row_2.classification == 2
+        assert result_row_2.has_signature == 1
+
 
     # Called at the conclusion of every unit test.
     # Removes all records from the table but leaves the table
