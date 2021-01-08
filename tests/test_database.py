@@ -12,15 +12,6 @@ class TestDB(unittest.TestCase):
     # Make sure no records are in the database before the unittest
     def setUp(self):
         validate_database()
-
-        sql_delete_records = """DELETE FROM classifications;"""
-
-        conn = sqlite3.connect(identidoc_db)
-
-        c = conn.cursor()
-        c.execute(sql_delete_records)
-        conn.commit()
-        conn.close()
     
 
     # This test will check the validation of the ClassificationResultTableRow
@@ -231,5 +222,36 @@ class TestDB(unittest.TestCase):
         assert query_combo_all.generate_query_string() == 'SELECT * FROM classifications WHERE 1600664400 <= timestamp AND timestamp < 1600750800 AND classification = 5 AND has_signature = 0;'
         
 
+    # Test inserting the record
+    def test_insert_record_command(self):
+        invalid_table_row  = ClassificationResultTableRow('1610121696.file.png', -1000, True)
+        assert insert_record_command(invalid_table_row) == -1
+
+        valid_table_row = ClassificationResultTableRow('1610121696.this.is.a.valid.filename.pdf', 1, False)
+        assert insert_record_command(valid_table_row) == 0
+
+        # Ensure that the record is being inserted with a SQL query
+        conn = sqlite3.connect(identidoc_db)
+
+        c = conn.cursor()
+        c.execute('SELECT * FROM classifications;')
+        
+        results = c.fetchall()
+
+        conn.close()
+
+        assert len(results) == 1
+        assert results[0] == (1610121696, 'this.is.a.valid.filename.pdf', 1, 0)
+
+
+    # Called at the conclusion of every unit test.
+    # Removes all records from the table but leaves the table
     def tearDown(self):
-        pass
+        sql_delete_records = """DELETE FROM classifications;"""
+
+        conn = sqlite3.connect(identidoc_db)
+
+        c = conn.cursor()
+        c.execute(sql_delete_records)
+        conn.commit()
+        conn.close()

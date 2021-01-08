@@ -239,15 +239,15 @@ def insert_record_command(record: ClassificationResultTableRow) -> int:
     try:
         conn = sqlite3.connect(identidoc_db)
         c = conn.cursor()
-        c.execute('INSERT INTO classifications VALUES ?;', record.to_tuple())
+        c.execute('INSERT INTO classifications VALUES (?, ?, ?, ?);', record.to_tuple())
+        conn.commit()
+        conn.close()
     
-    except sqlite3.Error:
+    except sqlite3.Error as e:
+        print(e)
         conn.rollback()
         conn.close()
         return -1
-
-    conn.commit()
-    conn.close()
 
     return 0
 
