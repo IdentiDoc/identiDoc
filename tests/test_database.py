@@ -181,11 +181,55 @@ class TestDB(unittest.TestCase):
         day_thee = datetime(2020, 12, 31)
 
         # An invalid query should just return None
-        invalid_query = ClassificationResultQuery(day_two, '3', True)
-        assert invalid_query.generate_query_string() == None
+        invalid_query_1 = ClassificationResultQuery(day_two, '3', True)
+        invalid_query_2 = ClassificationResultQuery(day_one, 6, False)
+
+        assert invalid_query_1.generate_query_string() == None
+        assert invalid_query_2.generate_query_string() == None
 
         no_constraint_query = ClassificationResultQuery(None, None, None)
         assert no_constraint_query.generate_query_string() == 'SELECT * FROM classifications;'
+
+        # Tests to ensure that each clause is properly formed
+        query_day_1 = ClassificationResultQuery(day_one, None, None)
+        query_day_2 = ClassificationResultQuery(day_two, None, None)
+        query_day_3 = ClassificationResultQuery(day_thee, None, None)
+
+        assert query_day_1.generate_query_string() == 'SELECT * FROM classifications WHERE 1600664400 <= timestamp AND timestamp < 1600750800;'
+        assert query_day_2.generate_query_string() == 'SELECT * FROM classifications WHERE 1606024800 <= timestamp AND timestamp < 1606111200;'
+        assert query_day_3.generate_query_string() == 'SELECT * FROM classifications WHERE 1609394400 <= timestamp AND timestamp < 1609480800;'
+
+        query_class_0 = ClassificationResultQuery(None, 0, None)
+        query_class_1 = ClassificationResultQuery(None, 1, None)
+        query_class_2 = ClassificationResultQuery(None, 2, None)
+        query_class_3 = ClassificationResultQuery(None, 3, None)
+        query_class_4 = ClassificationResultQuery(None, 4, None)
+        query_class_5 = ClassificationResultQuery(None, 5, None)
+
+        assert query_class_0.generate_query_string() == 'SELECT * FROM classifications WHERE classification = 0;'
+        assert query_class_1.generate_query_string() == 'SELECT * FROM classifications WHERE classification = 1;'
+        assert query_class_2.generate_query_string() == 'SELECT * FROM classifications WHERE classification = 2;'
+        assert query_class_3.generate_query_string() == 'SELECT * FROM classifications WHERE classification = 3;'
+        assert query_class_4.generate_query_string() == 'SELECT * FROM classifications WHERE classification = 4;'
+        assert query_class_5.generate_query_string() == 'SELECT * FROM classifications WHERE classification = 5;'
+
+        query_signature_true = ClassificationResultQuery(None, None, True)
+        query_signature_false = ClassificationResultQuery(None, None, False)
+
+        assert query_signature_true.generate_query_string() == 'SELECT * FROM classifications WHERE has_signature = 1;'
+        assert query_signature_false.generate_query_string() == 'SELECT * FROM classifications WHERE has_signature = 0;'
+
+        # Tests to ensure that clauses can be combined properly
+        query_combo_1 = ClassificationResultQuery(day_one, 0, None)
+        query_combo_2 = ClassificationResultQuery(day_one, None, False)
+        query_combo_3 = ClassificationResultQuery(None, 4, True)
+        query_combo_all = ClassificationResultQuery(day_one, 5, False)
+
+        assert query_combo_1.generate_query_string() == 'SELECT * FROM classifications WHERE 1600664400 <= timestamp AND timestamp < 1600750800 AND classification = 0;'
+        assert query_combo_2.generate_query_string() == 'SELECT * FROM classifications WHERE 1600664400 <= timestamp AND timestamp < 1600750800 AND has_signature = 0;'
+        assert query_combo_3.generate_query_string() == 'SELECT * FROM classifications WHERE classification = 4 AND has_signature = 1;'
+        assert query_combo_all.generate_query_string() == 'SELECT * FROM classifications WHERE 1600664400 <= timestamp AND timestamp < 1600750800 AND classification = 5 AND has_signature = 0;'
+        
 
     def tearDown(self):
         pass

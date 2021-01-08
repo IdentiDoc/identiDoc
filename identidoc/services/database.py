@@ -125,7 +125,7 @@ class ClassificationResultQuery(object):
         if self.classification_date is not None:
             date_range = self.generate_date_range()
 
-            query_string += ' WHERE ' + str(date_range[0]) + ' <=  timestamp AND timestamp < ' + str(date_range[1])
+            query_string += ' WHERE ' + str(date_range[0]) + ' <= timestamp AND timestamp < ' + str(date_range[1])
 
             previous_clause = True
 
