@@ -3,8 +3,6 @@
 
 from flask import Flask, render_template
 
-import os
-
 import identidoc.api as identidoc_api
 import identidoc.services
 
