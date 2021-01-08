@@ -84,7 +84,22 @@ class TestDB(unittest.TestCase):
 
         assert not signature_correct_datatype_1.is_invalid
         assert not signature_correct_datatype_2.is_invalid
-        
+
+
+    # This function creates a tuple for insertion into the database
+    def test_ClassificationResultTableRow_tuple_generator(self):
+        invalid_obj = ClassificationResultTableRow('1610121696.file.png', ['list', 'for', 'some', 'reason'], True)
+
+        assert invalid_obj.to_tuple() is None
+
+        valid_obj_1 = ClassificationResultTableRow('1610121696.file.png', 0, False)
+        valid_obj_2 = ClassificationResultTableRow('1610121696.this.is.a.valid.filename.pdf', 1, False)
+        valid_obj_3 = ClassificationResultTableRow('1610124814.file.png', 2, True)
+
+        assert valid_obj_1.to_tuple() == (1610121696, 'file.png', 0, False)
+        assert valid_obj_2.to_tuple() == (1610121696, 'this.is.a.valid.filename.pdf', 1, False)
+        assert valid_obj_3.to_tuple() == (1610124814, 'file.png', 2, True)
+
 
     def tearDown(self):
         pass
