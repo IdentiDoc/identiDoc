@@ -173,6 +173,16 @@ class TestDB(unittest.TestCase):
         assert query_2.generate_date_range() == [1606024800, 1606111200]
         assert query_3.generate_date_range() == [1609394400, 1609480800]
 
+    
+    # Ensure that expected query strings are being generated
+    def test_ClassificationResultQuery_query_string_generator(self):
+        day_one = datetime(2020, 9, 21)
+        day_two = datetime(2020, 11, 22)
+        day_thee = datetime(2020, 12, 31)
+
+        # An invalid query should just return None
+        invalid_query = ClassificationResultQuery(day_two, '3', True)
+        assert invalid_query.generate_query_string() == None
 
     def tearDown(self):
         pass
