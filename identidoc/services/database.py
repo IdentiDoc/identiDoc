@@ -32,21 +32,25 @@ class ClassificationResultTableRow(object):
 
             # We're going to assume that the filename has already been validated/created through the api,
             # which it should be. Please don't abuse this privilege
+            assert isinstance(filename, str)
             split_filename = filename.split(".", 1)
-            assert len(split_filename) == 2
 
             self.timestamp = int(split_filename[0])
             self.filename = split_filename[1]
             self.classification = classification
             self.has_signature = int(has_signature)
+            self.is_invalid = False
 
 
         except AssertionError:
-            self = None
+            self.is_invalid = True
 
     
     # Returns a tuple in the necessary form to insert a record into the database
     def to_tuple(self):
+        if self.is_invalid:
+            return None
+
         return (self.timestamp, self.filename, self.classification, self.has_signature)
 
 
@@ -67,15 +71,19 @@ class ClassificationResultQuery(object):
             self.classification_date = classification_date
             self.classification = classification
             self.has_signature = has_signature
+            self.is_invalid = False
         
         except AssertionError:
-            self = None
+            self.is_invalid = True
 
     # returns two POSIX time stamps for the query
     # The first represents the first second of the
     # indicated date, the second represents the last
     # second of the indicated date
     def generate_date_range(self):
+        if self.is_invalid:
+            return None
+
         orig_date = self.classification_date
 
         # Just get the day month and year of the date passed in, don't rely on the time being midnight
@@ -106,6 +114,9 @@ class ClassificationResultQuery(object):
     # Member function to generate the query string necessary.
     # All members of the object were validated in the constructor
     def generate_query_string(self):
+        if self.is_invalid:
+            return None
+        
         query_string = 'SELECT * FROM classifications'
 
         previous_clause = False
@@ -220,8 +231,8 @@ def create_table(conn):
 #
 # This function returns -1 on any failure and 0 on success
 def insert_record_command(record: ClassificationResultTableRow) -> int:
-    # Make sure that the record is
-    if record is None:
+    # Make sure that the record is valid
+    if record.is_invalid:
         return -1
 
     try:
@@ -253,7 +264,7 @@ def insert_record_command(record: ClassificationResultTableRow) -> int:
 def retrieve_records_query(classification_date: datetime, classification: int, has_signature: bool) -> List[QueryResultRow]:
     Query = ClassificationResultQuery(classification_date, classification, has_signature)
 
-    if Query is None:
+    if Query.is_invalid:
         return []
 
     query_string = Query.generate_query_string()
