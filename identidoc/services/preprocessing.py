@@ -6,6 +6,11 @@ import sys
 import os
 
 
+TEMP_PATH = os.environ['IDENTIDOC_TEMP_PATH']
+
+if not os.path.exists(TEMP_PATH):
+    os.makedirs(TEMP_PATH)
+
 # This function serves as a wrapper function that handles all preprocessing for the Sprint 4 demonstration
 # TODO - Add another level of wrapper functions in the __init__.py file to handle classification as well
 # arguments - filename: the path to the input file
