@@ -20,8 +20,9 @@ then
     echo 'No Virtual Environment Detected'
     python3 -m venv identidoc_venv
     echo -e 'export PYTHONPATH=${VIRTUAL_ENV}/../\n' >> identidoc_venv/bin/activate
-    echo -e 'export UPLOAD_PATH=${HOME}/identidoc_uploads/\n' >> identidoc_venv/bin/activate
+    echo -e 'export IDENTIDOC_UPLOAD_PATH=${HOME}/identidoc_uploads/\n' >> identidoc_venv/bin/activate
     echo -e 'export IDENTIDOC_DB=${HOME}/identidoc.db\n' >> identidoc_venv/bin/activate
+    echo -e 'export IDENTIDOC_TEMP_PATH=${HOME}/identidoc_temp/\n' >> identidoc_venv/bin/activate
 
 else
     echo 'Virtual Environment Detected'
