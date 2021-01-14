@@ -49,11 +49,14 @@ def tesseract_text_extraction(image):
 
 #This function writes the extracted text to a file
 def save_text_to_file(extracted_text):
-    with open('UTA_form.txt', 'w', newline="") as file:
+    # Create the text file in the temporary directory
+    UTA_form = os.path.join(TEMP_PATH, 'UTA_form.txt')
+
+    with open(UTA_form, 'w', newline="") as file:
         #file.write(json.dumps(extracted_text))
         file.write(extracted_text['text'])  # Made this adjustment just for now
     
-    return os.path.abspath('UTA_form.txt')
+    return os.path.abspath(UTA_form)
 
 
 #This function converts the input file to .png
@@ -61,11 +64,11 @@ def file_conversion(fileName):
     if fileName.lower().endswith(('.png','.jpg','.jpeg')):
         image = cv2.imread(fileName)
     elif fileName.lower().endswith('.pdf'):
-        subprocess.call(["pdftoppm", "-png", fileName, "temp"])
-        image = cv2.imread("temp-1.png")
+        subprocess.call(["pdftoppm", "-png", fileName, os.path.join(TEMP_PATH, "temp")])
+        image = cv2.imread(os.path.join(TEMP_PATH, "temp-1.png"))
     elif fileName.lower().endswith('.heic'):
-        subprocess.call(["heif-convert", fileName, "temp.png"])
-        image = cv2.imread("temp.png")
+        subprocess.call(["heif-convert", fileName, os.path.join(TEMP_PATH, "temp.png")])
+        image = cv2.imread(os.path.join(TEMP_PATH, "temp.png"))
     return image
 
 
