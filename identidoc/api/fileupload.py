@@ -1,7 +1,6 @@
 # RESTful API Resource for file uploads
 
 import os
-from datetime import datetime
 from flask import send_file
 from flask_restful import Resource, request
 from werkzeug.utils import secure_filename
@@ -33,6 +32,7 @@ class FileUpload(Resource):
         else:
             return { 'message' : 'Unsupported file format.' }, 400
 
+
     @staticmethod
     def valid_filename(filename):
         if '.' in filename:
@@ -41,10 +41,11 @@ class FileUpload(Resource):
 
         return False
 
+
     @staticmethod
+    # Updated - Replace this with a standard POSIX timestamp
     def add_timestamp(filename):
-        now = datetime.now()
-        timestamp = now.strftime('%d%m%Y%H%M%S%f')
-        return timestamp + '.' + filename
+        timestamp = identidoc.services.get_current_time_as_POSIX_timestamp()
+        return str(timestamp) + '.' + filename
 
 
