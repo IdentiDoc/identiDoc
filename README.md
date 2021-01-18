@@ -32,7 +32,10 @@ identiDoc uses CircleCI to support a robust CI/CD pipeline. Whenever commits are
 
 ### API
 
-The identiDoc API is a RESTful API developed using the Flask-RESTful library.
+The identiDoc API is a RESTful API developed using the Flask-RESTful library. The API has 3 endpoints planned.
+* GET /query - This endpoint sends in parameters for the query which receives classification results. ***PARTIALLY COMPLETED***
+* POST /upload - This endpoint allows the user to upload a file for classification. ***COMPLETE***
+* GET /download - This endpoint will allow the user to download the classified file. ***PLANNED***
 
 ### Database
 
