@@ -175,7 +175,7 @@ class QueryResultRow(object):
 
 
 # The location of the identidoc database - env variable
-identidoc_db = os.environ.get('IDENTIDOC_DB', '')
+identidoc_db = os.environ['IDENTIDOC_DB']
 
 
 # This function is run while creating the identiDoc program.
