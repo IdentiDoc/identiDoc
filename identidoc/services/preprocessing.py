@@ -62,7 +62,7 @@ def image_pre_processing(image):
 
 # This function extracts text from the pre-processed image
 def tesseract_text_extraction(image):
-    tesseract_config = r'--oem 3 --psm 6'
+    tesseract_config = r'-c tessedit_char_whitelist=" -\'/@:()0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" --oem 3 --psm 6'
     #feeding the image to the tessercat
     extracted_text= pytesseract.image_to_string(image, output_type=pytesseract.Output.DICT, config=tesseract_config, lang='eng')
     return extracted_text
