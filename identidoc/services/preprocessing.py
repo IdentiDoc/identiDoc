@@ -22,7 +22,7 @@ def preprocess_file(filename):
         return filename
 
     image = file_conversion(filename)
-    rotate_image = rotate_image(image)
+    rotated_image = rotate_image(image)
     processed_image = image_pre_processing(rotated_image)
     extracted_text = tesseract_text_extraction(processed_image)
 
@@ -35,7 +35,7 @@ def preprocess_file(filename):
 # Output is a cv2 image that is oriented correctly by tesseract
 def rotate_image(image):
     orig_image_osd = pytesseract.image_to_osd(image)
-    image_rotation_angle = re.search('(?<=Rotate: )\d+', osd_rotated_image).group(0)
+    image_rotation_angle = re.search('(?<=Rotate: )\d+', orig_image_osd).group(0)
 
     correctly_oriented_image = None
 
