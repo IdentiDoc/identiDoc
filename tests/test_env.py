@@ -11,6 +11,6 @@ class TestEnv(unittest.TestCase):
         temp_path = os.environ.get('IDENTIDOC_TEMP_PATH', 'ERROR')
         db_path = os.environ.get('IDENTIDOC_DB', 'ERROR')
 
-        assert upload_path is not 'ERROR'
-        assert temp_path is not 'ERROR'
-        assert db_path is not 'ERROR'
+        assert upload_path != 'ERROR'
+        assert temp_path != 'ERROR'
+        assert db_path != 'ERROR'

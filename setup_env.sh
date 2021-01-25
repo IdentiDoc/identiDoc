@@ -7,6 +7,10 @@
 # Run identiDoc with the command
 # python identidoc/__init__.py
 
+# Add these in, CircleCI didn't like it when these were missing
+sudo apt update
+sudo apt upgrade
+
 # Install venv
 sudo apt install python3-venv
 sudo apt install tesseract-ocr
