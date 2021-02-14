@@ -9,6 +9,16 @@ def readfile(fileName):
         extracted_text= str(extracted_text)
     return extracted_text
 	
+def vectorizer(extracted_text):
+    new_vec=TfidfVectorizer(vocabulary=pickle.load(open("classification_model/vocab.pkl","rb")))
+    vectorized_data=new_vec.fit_transform([extracted_text])
+    return vectorized_data
+
+def classifier(vectorized_data):
+    loaded_model=pickle.load(open("classification_model/model.pkl","rb"))
+    prediction=loaded_model.predict(vectorized_data)
+    return prediction
+
 # if __name__ == "__main__":
 #     if len(sys.argv) == 2:
 #         # textFromFile= readfile(fileName)
@@ -19,6 +29,8 @@ def readfile(fileName):
 def main():
     fileName = sys.argv[1]
     extracted_text= readfile(fileName)
-    print(extracted_text)
+    vectorized_data= vectorizer(extracted_text)
+    prediction= classifier(vectorized_data)
+    print(prediction)
 
 main()
