@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 def readfile(fileName):
     with open(fileName, 'r') as file:
         extracted_text = file.read().replace('\n', '')
-        extracted_text= str(data)
+        extracted_text= str(extracted_text)
     return extracted_text
 	
 # if __name__ == "__main__":
@@ -19,5 +19,6 @@ def readfile(fileName):
 def main():
     fileName = sys.argv[1]
     extracted_text= readfile(fileName)
+    print(extracted_text)
 
 main()
