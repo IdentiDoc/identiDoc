@@ -17,3 +17,6 @@ htmlcov/
 
 # SQLite db files
 *.db
+
+#mac custom useless files
+.DS_Store
