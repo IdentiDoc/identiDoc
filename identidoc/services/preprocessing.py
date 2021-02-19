@@ -5,7 +5,7 @@ import re
 import subprocess
 import sys
 import os
-
+import classification
 
 TEMP_PATH = os.environ['IDENTIDOC_TEMP_PATH']
 
@@ -71,11 +71,10 @@ def tesseract_text_extraction(image):
     return extracted_text
 
 
-#This function writes the extracted text to a file
+This function writes the extracted text to a file
 def save_text_to_file(extracted_text):
     # Create the text file in the temporary directory
     UTA_form = os.path.join(TEMP_PATH, 'UTA_form.txt')
-
     with open(UTA_form, 'w', newline="") as file:
         #file.write(json.dumps(extracted_text))
         file.write(extracted_text['text'])  # Made this adjustment just for now
@@ -107,7 +106,16 @@ if __name__ == "__main__":
         # call text-extraction function
         text_extracted = tesseract_text_extraction(processed_image) 
         #call save to a file
-        save_text_to_file(text_extracted)
+        #save_text_to_file(text_extracted)
+        #call vectorizer on extracted text
+        vectorized_data=vectorizer(text_extracted)
+        #call classifier to classify vectorized data
+        prediction=classifier(vectorized_data)
+        #convert prediction to text
+        doc_type=class_to_str(prediction)
+        #save prediction to file
+        save_text_to_file(doc_type)
+
     else:
         print("Use given format\n")
         print("python3 file.py fileName.extension\n")
