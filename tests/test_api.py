@@ -28,9 +28,9 @@ class TestAPI(unittest.TestCase):
 
     # Testing the query call returns a 200 response
     def test_query(self):
-        query_response_1 = self.test_client.get('/query/5-23-2002')
-        query_response_2 = self.test_client.get('/query/10-13-2020')
-        query_response_3 = self.test_client.get('/query/1-1-1970')
+        query_response_1 = self.test_client.get('/api/query/5-23-2002')
+        query_response_2 = self.test_client.get('/api/query/10-13-2020')
+        query_response_3 = self.test_client.get('/api/query/1-1-1970')
 
         result1 = query_response_1.status_code
         result3 = query_response_3.status_code
@@ -97,7 +97,7 @@ class TestAPI(unittest.TestCase):
     # Helper function to post file uploads in the correct format
     def post_file(self, filepath):
         return self.test_client.post(
-            '/upload',
+            '/api/upload',
             data = {
                 'file' : ( open(filepath, 'rb'), filepath ),
             }
