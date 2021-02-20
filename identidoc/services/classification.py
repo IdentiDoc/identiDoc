@@ -8,31 +8,37 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 #         extracted_text = file.read().replace('\n', '')
 #         extracted_text= str(extracted_text)
 #     return extracted_text
-	
+
+
 def vectorizer(extracted_text):
-    new_vec=TfidfVectorizer(vocabulary=pickle.load(open("classification_model/vocab.pkl","rb")))
-    vectorized_data=new_vec.fit_transform([extracted_text])
+    new_vec = TfidfVectorizer(vocabulary=pickle.load(
+        open("classification_model/vocab.pkl", "rb")))
+    vectorized_data = new_vec.fit_transform([extracted_text])
     return vectorized_data
 
+
 def classifier(vectorized_data):
-    loaded_model=pickle.load(open("classification_model/model.pkl","rb"))
-    prediction=loaded_model.predict(vectorized_data)
+    loaded_model = pickle.load(open("classification_model/model.pkl", "rb"))
+    prediction = loaded_model.predict(vectorized_data)
     return str(prediction[0])
 
-#these would ideally be queried from database
-#for demonstration purpose, we're using this for now
+# these would ideally be queried from database
+# for demonstration purpose, we're using this for now
+
+
 def class_to_str(prediction):
-    if prediction=="1":
+    if prediction == "1":
         return "2021-2022 Cost of Attendance (COA) Adjusment Request"
-    elif prediction=="2":
+    elif prediction == "2":
         return "2021-2022 Verification of Household"
-    elif prediction=="3":
+    elif prediction == "3":
         return "2021-2022 Verification of Income Student"
-    elif prediction=="4":
+    elif prediction == "4":
         return "OIE CPT Academic Advisor Recommendation"
-    elif prediction=="5":
+    elif prediction == "5":
         return "OIE CPT Student Information"
-    else return "We Could not classify the document"
+    else: 
+        return "We Could not classify the document"
 
 
 # if __name__ == "__main__":
