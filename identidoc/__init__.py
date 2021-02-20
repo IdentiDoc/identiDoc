@@ -19,9 +19,25 @@ identidoc.services.validate_database()
 
 
 @app.route('/')
-def index():
+def load_index_page():
     return render_template('index.html')
 
 
+@app.route('/nav')
+def load_nav():
+    return render_template('nav.html')
+
+
+@app.route('/upload')
+def load_upload_file_page():
+    return render_template('upload.html')
+
+
+@app.route('/query')
+def load_query_page():
+    return render_template('query.html')
+
+
+# Runs identiDoc locally
 if __name__ == '__main__':
-    app.run(debug=True)     # This value will be false in production
+    app.run(debug=True)
