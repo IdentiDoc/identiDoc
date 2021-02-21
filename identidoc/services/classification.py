@@ -28,7 +28,7 @@ def vectorizer(extracted_text):
 
 
 def classifier(vectorized_data):
-    loaded_model = pickle.load(open("./classification_model/model.pkl", "rb"))
+    loaded_model = pickle.load(open(os.path.join(CLASSIFICATION_MODELS_PATH, "model.pkl"), "rb"))
     prediction = loaded_model.predict(vectorized_data)
     return int(prediction[0])
 
