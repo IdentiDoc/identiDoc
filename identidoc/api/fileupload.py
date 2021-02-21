@@ -1,11 +1,10 @@
 # RESTful API Resource for file uploads
 
 import os
-from flask import send_file
 from flask_restful import Resource, request
 from werkzeug.utils import secure_filename
 
-import identidoc.services
+from identidoc.services import get_current_time_as_POSIX_timestamp, classify_uploaded_file
 
 # List of allowed file extensions
 file_extensions=['PDF','PNG','JPG','JPEG','HEIC']
@@ -26,10 +25,10 @@ class FileUpload(Resource):
             saved_filepath = os.path.join(UPLOAD_PATH, filename)
 
             file.save(saved_filepath)
-            extracted_text_filepath = identidoc.services.preprocess_file(saved_filepath)
             
-            #return send_file(extracted_text_filepath, attachment_filename=orig_filename + '.txt', as_attachment=True)
-            return { 'message' : 'Upload Successful'}, 200
+            document_classification = classify_uploaded_file(saved_filepath)
+            
+            return { 'classification' : str(document_classification) }, 200
         else:
             return { 'message' : 'Unsupported file format.' }, 400
 
@@ -46,7 +45,7 @@ class FileUpload(Resource):
     @staticmethod
     # Updated - Replace this with a standard POSIX timestamp
     def add_timestamp(filename):
-        timestamp = identidoc.services.get_current_time_as_POSIX_timestamp()
+        timestamp = get_current_time_as_POSIX_timestamp()
         return str(timestamp) + '.' + filename
 
 

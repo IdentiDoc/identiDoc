@@ -1,9 +1,7 @@
 import cv2
 import pytesseract
-import json
 import re
 import subprocess
-import sys
 import os
 
 TEMP_PATH = os.environ['IDENTIDOC_TEMP_PATH']
