@@ -15,10 +15,6 @@ if not os.path.exists(TEMP_PATH):
 # arguments - filename: the path to the input file
 # returns - the text extracted from the input file in the correct form to be classified
 def preprocess_file(filename):
-    # .txt files are still valid. They probably shouldn't be?
-    if filename.lower().endswith('.txt'):
-        return filename
-
     image = file_conversion(filename)
     rotated_image = rotate_image(image)
     processed_image = image_pre_processing(rotated_image)
