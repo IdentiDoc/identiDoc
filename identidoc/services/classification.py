@@ -10,6 +10,15 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 #     return extracted_text
 
 
+# Top level function that returns the classification of the document
+# The text of the document is passed in as a singular string and
+# the function returns the classification of the uploaded document as an int.
+def predict_document_class(text):
+    vectorized_data = vectorizer(text)
+    classification = classifier(vectorized_data)
+    return classification
+
+
 def vectorizer(extracted_text):
     new_vec = TfidfVectorizer(vocabulary=pickle.load(
         open("classification_model/vocab.pkl", "rb")))
@@ -20,25 +29,23 @@ def vectorizer(extracted_text):
 def classifier(vectorized_data):
     loaded_model = pickle.load(open("classification_model/model.pkl", "rb"))
     prediction = loaded_model.predict(vectorized_data)
-    return str(prediction[0])
+    return int(prediction[0])
 
 # these would ideally be queried from database
 # for demonstration purpose, we're using this for now
-
-
-def class_to_str(prediction):
-    if prediction == "1":
-        return "2021-2022 Cost of Attendance (COA) Adjusment Request"
-    elif prediction == "2":
-        return "2021-2022 Verification of Household"
-    elif prediction == "3":
-        return "2021-2022 Verification of Income Student"
-    elif prediction == "4":
-        return "OIE CPT Academic Advisor Recommendation"
-    elif prediction == "5":
-        return "OIE CPT Student Information"
-    else: 
-        return "We Could not classify the document"
+# def class_to_str(prediction):
+#     if prediction == "1":
+#        return "2021-2022 Cost of Attendance (COA) Adjusment Request"
+#    elif prediction == "2":
+#        return "2021-2022 Verification of Household"
+#    elif prediction == "3":
+#        return "2021-2022 Verification of Income Student"
+#    elif prediction == "4":
+#        return "OIE CPT Academic Advisor Recommendation"
+#    elif prediction == "5":
+#        return "OIE CPT Student Information"
+#    else:
+#        return "We Could not classify the document"
 
 
 # if __name__ == "__main__":

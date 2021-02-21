@@ -71,7 +71,7 @@ def tesseract_text_extraction(image):
     return extracted_text
 
 
-This function writes the extracted text to a file
+#This function writes the extracted text to a file
 def save_text_to_file(extracted_text):
     # Create the text file in the temporary directory
     UTA_form = os.path.join(TEMP_PATH, 'UTA_form.txt')
