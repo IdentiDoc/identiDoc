@@ -61,15 +61,18 @@ class TestAPI(unittest.TestCase):
         resp_invalid1 = self.post_file('./tests/files_to_upload/invalid.bmp')
         resp_invalid2 = self.post_file('./tests/files_to_upload/invalid.mp4')
         resp_invalid3 = self.post_file('./tests/files_to_upload/invalid.ABC')
+        resp_invalid4 = self.post_file('./tests/files_to_upload/invalid.txt')
 
         self.assertEqual(resp_invalid1.status_code, 400)
         self.assertEqual(resp_invalid2.status_code, 400)
         self.assertEqual(resp_invalid3.status_code, 400)
+        self.assertEqual(resp_invalid4.status_code, 400)
 
         # Ensure correct message
         self.assertEqual(resp_invalid1.json['message'], 'Unsupported file format.')
         self.assertEqual(resp_invalid2.json['message'], 'Unsupported file format.')
         self.assertEqual(resp_invalid3.json['message'], 'Unsupported file format.')
+        self.assertEqual(resp_invalid4.json['message'], 'Unsupported file format.')
 
     @ignore_resource_warnings
     def test_file_upload_file_too_large(self):
