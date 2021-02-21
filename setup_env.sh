@@ -27,6 +27,7 @@ then
     echo -e 'export IDENTIDOC_UPLOAD_PATH=${HOME}/identidoc_uploads/\n' >> identidoc_venv/bin/activate
     echo -e 'export IDENTIDOC_DB=${HOME}/identidoc.db\n' >> identidoc_venv/bin/activate
     echo -e 'export IDENTIDOC_TEMP_PATH=${HOME}/identidoc_temp/\n' >> identidoc_venv/bin/activate
+    echo -e 'export IDENTIDOC_CLASSIFICATION_MODELS=${VIRTUAL_ENV}/../identidoc/services/classification_model/\n' >> identidoc_venv/bin/activate
 
 else
     echo 'Virtual Environment Detected'

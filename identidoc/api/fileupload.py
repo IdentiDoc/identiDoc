@@ -28,7 +28,8 @@ class FileUpload(Resource):
             file.save(saved_filepath)
             extracted_text_filepath = identidoc.services.preprocess_file(saved_filepath)
             
-            return send_file(extracted_text_filepath, attachment_filename=orig_filename + '.txt', as_attachment=True)
+            #return send_file(extracted_text_filepath, attachment_filename=orig_filename + '.txt', as_attachment=True)
+            return { 'message' : 'Upload Successful'}, 200
         else:
             return { 'message' : 'Unsupported file format.' }, 400
 
