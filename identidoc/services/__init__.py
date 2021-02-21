@@ -6,3 +6,11 @@ from .database import validate_database, ClassificationResultTableRow, insert_re
 from .timehandling import get_current_time_as_POSIX_timestamp, datetime_to_POSIX_timestamp
 
 
+# The top level function that classifies the uploaded file
+# filename is the path to the file to be classified
+# This function returns the predicted class as an int
+def classify_uploaded_file(filename):
+    extracted_text = preprocess_file(filename)
+    doc_class = predict_document_class(extracted_text)
+
+    return doc_class

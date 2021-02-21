@@ -13,7 +13,7 @@ if not os.path.exists(TEMP_PATH):
 
 # This function serves as a wrapper function that handles all initial image preprocessing
 # arguments - filename: the path to the input file
-# returns - filepath to .txt of extracted text that will be downloaded for the Sprint 4 demonstration.
+# returns - the text extracted from the input file in the correct form to be classified
 def preprocess_file(filename):
     # .txt files are still valid. They probably shouldn't be?
     if filename.lower().endswith('.txt'):
@@ -68,17 +68,6 @@ def tesseract_text_extraction(image):
     tesseract_config = r'-c tessedit_char_whitelist=" -.@/()%:\',?!0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" --oem 3 --psm 6'
     extracted_text= pytesseract.image_to_string(image, output_type=pytesseract.Output.STRING, config=tesseract_config, lang='eng')
     return str(extracted_text)
-
-
-#This function writes the extracted text to a file
-def save_text_to_file(extracted_text):
-    # Create the text file in the temporary directory
-    UTA_form = os.path.join(TEMP_PATH, 'UTA_form.txt')
-    with open(UTA_form, 'w', newline="") as file:
-        #file.write(json.dumps(extracted_text))
-        file.write(extracted_text['text'])  # Made this adjustment just for now
-    
-    return os.path.abspath(UTA_form)
 
 
 #This function converts the input file to .png

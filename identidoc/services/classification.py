@@ -1,6 +1,5 @@
 import pickle
 import os
-import sys
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 # def readfile(fileName):
