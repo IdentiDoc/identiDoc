@@ -40,28 +40,16 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(result2, 200)
         self.assertEqual(result3, 200)
 
-
-    @ignore_resource_warnings
-    def test_file_upload_functional(self):
-        # Just testing the upload of 3 test files
-        resp1 = self.post_file('./tests/files_to_upload/file1.txt')
-        resp2 = self.post_file('./tests/files_to_upload/file2.txt')
-        resp3 = self.post_file('./tests/files_to_upload/file3.txt')
-
-        self.assertEqual(resp1.status_code, 200)
-        self.assertEqual(resp2.status_code, 200)
-        self.assertEqual(resp3.status_code, 200)
-
     
     @ignore_resource_warnings
     def test_file_upload_all_valid_file_types(self):
-        #resp_heic = self.post_file('./tests/files_to_upload/example.heic')
+        resp_heic = self.post_file('./tests/files_to_upload/example.heic')
         resp_jpeg = self.post_file('./tests/files_to_upload/example.jpeg')
         resp_jpg = self.post_file('./tests/files_to_upload/example.jpg')
         resp_pdf = self.post_file('./tests/files_to_upload/example.pdf')
         resp_png = self.post_file('./tests/files_to_upload/example.png')
 
-        #self.assertEqual(resp_heic.status_code, 200)
+        self.assertEqual(resp_heic.status_code, 200)
         self.assertEqual(resp_jpeg.status_code, 200)
         self.assertEqual(resp_jpg.status_code, 200)
         self.assertEqual(resp_pdf.status_code, 200)
@@ -73,15 +61,18 @@ class TestAPI(unittest.TestCase):
         resp_invalid1 = self.post_file('./tests/files_to_upload/invalid.bmp')
         resp_invalid2 = self.post_file('./tests/files_to_upload/invalid.mp4')
         resp_invalid3 = self.post_file('./tests/files_to_upload/invalid.ABC')
+        resp_invalid4 = self.post_file('./tests/files_to_upload/invalid.txt')
 
         self.assertEqual(resp_invalid1.status_code, 400)
         self.assertEqual(resp_invalid2.status_code, 400)
         self.assertEqual(resp_invalid3.status_code, 400)
+        self.assertEqual(resp_invalid4.status_code, 400)
 
         # Ensure correct message
         self.assertEqual(resp_invalid1.json['message'], 'Unsupported file format.')
         self.assertEqual(resp_invalid2.json['message'], 'Unsupported file format.')
         self.assertEqual(resp_invalid3.json['message'], 'Unsupported file format.')
+        self.assertEqual(resp_invalid4.json['message'], 'Unsupported file format.')
 
     @ignore_resource_warnings
     def test_file_upload_file_too_large(self):

@@ -10,7 +10,9 @@ class TestEnv(unittest.TestCase):
         upload_path = os.environ.get('IDENTIDOC_UPLOAD_PATH', 'ERROR')
         temp_path = os.environ.get('IDENTIDOC_TEMP_PATH', 'ERROR')
         db_path = os.environ.get('IDENTIDOC_DB', 'ERROR')
+        classification_models = os.environ.get('IDENTIDOC_CLASSIFICATION_MODELS', 'ERROR')
 
         assert upload_path != 'ERROR'
         assert temp_path != 'ERROR'
         assert db_path != 'ERROR'
+        assert classification_models != 'ERROR'
