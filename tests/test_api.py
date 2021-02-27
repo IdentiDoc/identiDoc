@@ -28,13 +28,13 @@ class TestAPI(unittest.TestCase):
 
     # Testing the query call returns a 200 response
     def test_query(self):
-        query_response_1 = self.test_client.get('/api/query/5-23-2002')
-        query_response_2 = self.test_client.get('/api/query/10-13-2020')
-        query_response_3 = self.test_client.get('/api/query/1-1-1970')
+        query_response_1 = self.test_client.get('/api/query/None/-1/-1')
+        query_response_2 = self.test_client.get('/api/query/2020-01-01/0/0')
+        query_response_3 = self.test_client.get('/api/query/None/4/1')
 
         result1 = query_response_1.status_code
-        result3 = query_response_3.status_code
         result2 = query_response_2.status_code
+        result3 = query_response_3.status_code
 
         self.assertEqual(result1, 200)
         self.assertEqual(result2, 200)
