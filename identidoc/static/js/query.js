@@ -12,7 +12,7 @@ $('#queryForm').submit(function (e) {
     /* 
         Format of data for the form values:
         
-        date = Either "" if no date is selected or "yyyy-mm-dd"
+        date = Either "None" if no date is selected or "yyyy-mm-dd"
         
         docClass = "-1" - "5"
             "-1" :      Not selected
