@@ -1,6 +1,7 @@
 import os
 import sqlite3
 import pytz
+import json
 
 from datetime import datetime, timedelta, timezone
 from typing import List
@@ -172,6 +173,9 @@ class QueryResultRow(object):
         self.filename = record_tuple[1]
         self.classification = record_tuple[2]
         self.has_signature = record_tuple[3]
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
 
 
 # The location of the identidoc database - env variable

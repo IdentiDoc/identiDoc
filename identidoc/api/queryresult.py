@@ -1,21 +1,26 @@
 # RESTful API Resource for query
 
+import json
 from datetime import datetime
 from identidoc.services import retrieve_records_query
 from flask_restful import Resource
 
+
 class QueryResult(Resource):
     def get(self, UI_date, UI_classification, UI_signature):
+        classification_date, classification, has_signature = self.prepare_query(
+            UI_date, UI_classification, UI_signature)
+        results = retrieve_records_query(
+            classification_date, classification, has_signature)
 
-        classification_date, classification, has_signature = self.prepare_query(UI_date, UI_classification, UI_signature)
-        
-        results = retrieve_records_query(classification_date, classification, has_signature)
-
-        return { "result" : "These are the classification results" }
-    
+        return json.dumps({
+            'number': len(results),
+            'results': [result.toJSON() for result in results]
+        })
 
     # This function takes the raw data collected from the UI and
     # processes it into the necessary form to perform the query
+
     @staticmethod
     def prepare_query(raw_date, raw_classification, raw_signature):
         if raw_date == 'None':
@@ -34,5 +39,5 @@ class QueryResult(Resource):
             signature = False
         else:
             signature = True
-        
+
         return date, classification, signature
