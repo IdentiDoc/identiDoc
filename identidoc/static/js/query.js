@@ -1,4 +1,4 @@
-$('#queryForm').submit(function (e) {
+function submitQuery() {
     // Get the values from the form
     var date = document.getElementById('classificationDate').value;
     var docClass = document.getElementById('documentClass').value;
@@ -35,9 +35,15 @@ $('#queryForm').submit(function (e) {
             data = JSON.parse(JSON.stringify(data));
             console.log(data);
             alert(data.number);
+
+            data.results.forEach(function(record) {
+                record = JSON.parse(record);
+                console.log(record.timestamp);
+            });
+
         },
         error: function (data) {
             alert('ERROR');
         }
     });
-});
+}

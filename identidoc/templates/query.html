@@ -18,38 +18,36 @@
         <div class="overlay">
             <div class="description">
                 <h5 style="font-size: 32px;">Query</h5>
-
-                <form id="queryForm" method="GET" enctype="multipart/form-data">
-                    <label for="classificationDate">Date</label>
-                    <input type="date" id="classificationDate" min="2020-09-01" max="2021-06-01"><br>
-                    <label for="documentClass">Document Class</label>
-                    <select class="form-control" id="documentClass">
-                        <option value="-1" selected></option>
-                        <option value="1">Class 1 - Cost of Attendance Adjustment Request</option>
-                        <option value="2">Class 2 - Verification of Household</option>
-                        <option value="3">Class 3 - Verification of Income Student</option>
-                        <option value="4">Class 4 - CPT Academic Advisor Recommendation</option>
-                        <option value="5">Class 5 - CPT Student Information</option>
-                        <option value="0">Unrecognized Document</option>
-                    </select>
-                    <label for="signatureStatus">Signature</label>
-                    <select class="form-control" id="signatureStatus">
-                        <option value="-1" selected></option>
-                        <option value="0">No Signature Present</option>
-                        <option value="1">Signature Present</option>
-                    </select>
-                    <input id="queryFormSubmitBtn" type="submit" name="queryFormSubmitBtn" value="Query" />
-                </form>
+                <label for="classificationDate">Date</label>
+                <input type="date" id="classificationDate" min="2020-09-01" max="2021-06-01"><br>
+                <label for="documentClass">Document Class</label>
+                <select class="form-control" id="documentClass">
+                    <option value="-1" selected></option>
+                    <option value="1">Class 1 - Cost of Attendance Adjustment Request</option>
+                    <option value="2">Class 2 - Verification of Household</option>
+                    <option value="3">Class 3 - Verification of Income Student</option>
+                    <option value="4">Class 4 - CPT Academic Advisor Recommendation</option>
+                    <option value="5">Class 5 - CPT Student Information</option>
+                    <option value="0">Unrecognized Document</option>
+                </select>
+                <label for="signatureStatus">Signature</label>
+                <select class="form-control" id="signatureStatus">
+                    <option value="-1" selected></option>
+                    <option value="0">No Signature Present</option>
+                    <option value="1">Signature Present</option>
+                </select>
+                <input type="button" value="Submit" onclick="submitQuery()"/>
                 <table class="table" id="queryResultsTable"></table>
             </div>
         </div>
     </div>
 
-     <!-- add Javasscript file from js file -->
-     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-     <script type="text/javascript" src="/static/js/main.js"></script>
-     <script type="text/javascript" src="/static/js/query.js"></script>
+    <!-- add Javasscript file from js file -->
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/popper.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/main.js"></script>
+    <script type="text/javascript" src="/static/js/query.js"></script>
 </body>
 
 </html>
