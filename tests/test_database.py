@@ -2,6 +2,7 @@
 
 import unittest
 import sqlite3
+import json
 
 from datetime import datetime
 
@@ -261,6 +262,18 @@ class TestDB(unittest.TestCase):
         assert result_row_2.classification == 2
         assert result_row_2.has_signature == 1
     
+    
+    # Ensure that the toJSON function produces a valid JSON
+    def test_QueryResultRow_toJSON(self):
+        result_row_1 = QueryResultRow((1610121696, 'this.is.a.valid.filename.pdf', 1, 0))
+        result_row_2 = QueryResultRow((1610124814, 'file.png', 2, 1))
+
+        is_valid_JSON_1 = self.is_json(result_row_1)
+        is_valid_JSON_2 = self.is_json(result_row_2)
+
+        assert is_valid_JSON_1
+        assert is_valid_JSON_2
+
 
     # Testing a basic query - have to insert records into the database to start
     def test_retrieve_records_query_single_record(self):
@@ -399,3 +412,12 @@ class TestDB(unittest.TestCase):
 
         for record_num in range(120):
             insert_record_command(ClassificationResultTableRow(str(1600684200 + record_num) + '.no_signature.pdf', record_num % 6, False))
+
+
+    @staticmethod
+    def is_json(myjson):
+        try:
+            json_object = json.loads(myjson)
+        except ValueError as e:
+            return False
+        return True
