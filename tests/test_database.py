@@ -268,8 +268,8 @@ class TestDB(unittest.TestCase):
         result_row_1 = QueryResultRow((1610121696, 'this.is.a.valid.filename.pdf', 1, 0))
         result_row_2 = QueryResultRow((1610124814, 'file.png', 2, 1))
 
-        is_valid_JSON_1 = self.is_json(result_row_1)
-        is_valid_JSON_2 = self.is_json(result_row_2)
+        is_valid_JSON_1 = self.is_json(result_row_1.toJSON())
+        is_valid_JSON_2 = self.is_json(result_row_2.toJSON())
 
         assert is_valid_JSON_1
         assert is_valid_JSON_2
