@@ -32,6 +32,9 @@ $('#queryForm').submit(function (e) {
         type: "GET",
         success: function (data) {
             alert('SUCCESS');
+            data = JSON.parse(JSON.stringify(data));
+            console.log(data);
+            alert(data.number);
         },
         error: function (data) {
             alert('ERROR');

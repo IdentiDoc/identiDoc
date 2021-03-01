@@ -3,6 +3,7 @@
 import json
 from datetime import datetime
 from identidoc.services import retrieve_records_query
+from flask import jsonify
 from flask_restful import Resource
 
 
@@ -13,10 +14,10 @@ class QueryResult(Resource):
         results = retrieve_records_query(
             classification_date, classification, has_signature)
 
-        return json.dumps({
-            'number': len(results),
-            'results': [result.toJSON() for result in results]
-        })
+        return jsonify(
+            number=len(results),
+            results=[result.toJSON() for result in results]
+        )
 
     # This function takes the raw data collected from the UI and
     # processes it into the necessary form to perform the query
