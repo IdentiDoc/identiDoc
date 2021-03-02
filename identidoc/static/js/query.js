@@ -31,19 +31,15 @@ function submitQuery() {
         contentType: false,
         type: "GET",
         success: function (data) {
-            alert('SUCCESS');
             data = JSON.parse(JSON.stringify(data));
-            console.log(data);
-            alert(data.number);
-
-            data.results.forEach(function(record) {
-                record = JSON.parse(record);
-                console.log(record.timestamp);
-            });
+            populateTable(data)
 
         },
         error: function (data) {
             alert('ERROR');
         }
     });
+}
+
+function populateTable(jsonResponse) {
 }
