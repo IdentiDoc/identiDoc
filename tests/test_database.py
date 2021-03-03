@@ -417,7 +417,7 @@ class TestDB(unittest.TestCase):
     @staticmethod
     def is_json(myjson):
         try:
-            json_object = json.loads(json.dump(myjson))
+            json_object = json.loads(json.dumps(myjson))
         except ValueError as e:
             return False
         return True
