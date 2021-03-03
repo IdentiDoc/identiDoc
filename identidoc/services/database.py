@@ -1,7 +1,6 @@
 import os
 import sqlite3
 import pytz
-import json
 
 from datetime import datetime, timedelta, timezone
 from typing import List
@@ -19,7 +18,7 @@ class ClassificationResultTableRow(object):
     # classification - an integer 0 - 5 inclusive
     # 1 - 5 is a classified document
     # 0 is a non-classified document
-    # 
+    #
     # has_signature - True or False
     #
     # After constructing an object, ensure that it is not None
@@ -42,12 +41,11 @@ class ClassificationResultTableRow(object):
             self.has_signature = int(has_signature)
             self.is_invalid = False
 
-
         except AssertionError:
             self.is_invalid = True
 
-    
     # Returns a tuple in the necessary form to insert a record into the database
+
     def to_tuple(self):
         if self.is_invalid:
             return None
@@ -66,7 +64,7 @@ class ClassificationResultQuery(object):
             if classification is not None:
                 assert isinstance(classification, int)
                 assert 0 <= classification and classification <= 5
-            
+
             if has_signature is not None:
                 assert isinstance(has_signature, bool)
 
@@ -74,7 +72,7 @@ class ClassificationResultQuery(object):
             self.classification = classification
             self.has_signature = has_signature
             self.is_invalid = False
-        
+
         except AssertionError:
             self.is_invalid = True
 
@@ -107,18 +105,19 @@ class ClassificationResultQuery(object):
         start_date = start_date.astimezone(pytz.timezone('UTC'))
         end_date = start_date + timedelta(days=1)
 
-        start_date_timestamp = identidoc.services.datetime_to_POSIX_timestamp(start_date)
-        end_date_timestamp = identidoc.services.datetime_to_POSIX_timestamp(end_date)
+        start_date_timestamp = identidoc.services.datetime_to_POSIX_timestamp(
+            start_date)
+        end_date_timestamp = identidoc.services.datetime_to_POSIX_timestamp(
+            end_date)
 
         return [start_date_timestamp, end_date_timestamp]
-
 
     # Member function to generate the query string necessary.
     # All members of the object were validated in the constructor
     def generate_query_string(self):
         if self.is_invalid:
             return None
-        
+
         query_string = 'SELECT * FROM classifications'
 
         previous_clause = False
@@ -126,22 +125,22 @@ class ClassificationResultQuery(object):
         if self.classification_date is not None:
             date_range = self.generate_date_range()
 
-            query_string += ' WHERE ' + str(date_range[0]) + ' <= timestamp AND timestamp < ' + str(date_range[1])
+            query_string += ' WHERE ' + \
+                str(date_range[0]) + \
+                ' <= timestamp AND timestamp < ' + str(date_range[1])
 
             previous_clause = True
 
-        
         if self.classification is not None:
             if previous_clause:
                 query_string += ' AND '
             else:
                 query_string += ' WHERE '
-            
+
             query_string += 'classification = ' + str(self.classification)
 
             previous_clause = True
 
-        
         if self.has_signature is not None:
             if previous_clause:
                 query_string += ' AND '
@@ -154,9 +153,8 @@ class ClassificationResultQuery(object):
 
             query_string += 'has_signature = ' + str(value)
 
-
         return query_string + ';'
-            
+
 # The result of the query.
 # Records retrieved from the database are represented by this object
 #
@@ -175,7 +173,7 @@ class QueryResultRow(object):
         self.has_signature = record_tuple[3]
 
     def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__)
+        return {'timestamp': self.timestamp, 'filename': self.filename, 'classification': self.classification, 'has_signature': self.has_signature}
 
 
 # The location of the identidoc database - env variable
@@ -201,7 +199,7 @@ def validate_database():
 
     except:
         return -1
-    
+
     return 0
 
 
@@ -218,17 +216,17 @@ def create_table(conn):
     try:
         c = conn.cursor()
         c.execute(sql_create_table)
-    
+
     # Something went wrong, rollback the transaction
     except sqlite3.Error:
         conn.rollback()
-        return -1    
+        return -1
 
     conn.commit()
 
     return 0
 
-    
+
 # Inserts a record into the database
 # This function should be the only way to insert a record into the database.
 # Only one record can be inserted at a time since only one file can be classified at a time
@@ -243,10 +241,11 @@ def insert_record_command(record: ClassificationResultTableRow) -> int:
     try:
         conn = sqlite3.connect(identidoc_db)
         c = conn.cursor()
-        c.execute('INSERT INTO classifications VALUES (?, ?, ?, ?);', record.to_tuple())
+        c.execute('INSERT INTO classifications VALUES (?, ?, ?, ?);',
+                  record.to_tuple())
         conn.commit()
         conn.close()
-    
+
     except sqlite3.Error as e:
         print(e)
         conn.rollback()
@@ -267,7 +266,8 @@ def insert_record_command(record: ClassificationResultTableRow) -> int:
 # This function will return an empty list on error. NO ERROR MESSAGE WILL BE GIVEN FOR SECURITY PURPOSES
 # On a non-error, this function will return a list of zero or more QueryResultRows
 def retrieve_records_query(classification_date: datetime, classification: int, has_signature: bool) -> List[QueryResultRow]:
-    Query = ClassificationResultQuery(classification_date, classification, has_signature)
+    Query = ClassificationResultQuery(
+        classification_date, classification, has_signature)
 
     if Query.is_invalid:
         return []
@@ -278,7 +278,7 @@ def retrieve_records_query(classification_date: datetime, classification: int, h
         conn = sqlite3.connect(identidoc_db)
         c = conn.cursor()
         c.execute(query_string)
-    
+
     except sqlite3.Error:
         conn.close()
         return []

@@ -2,17 +2,18 @@
 
 $(document).ready(function () {
     table = $('#queryResultsTable').DataTable({
-        columns: [{
-                data: 'filename',
-                title: 'Uploaded File'
+        columns: [
+            {
+                title: 'Uploaded File',
+                data: 'filename'
             },
             {
-                data: 'classification',
-                title: 'Document Classification'
+                title: 'Document Classification',
+                data: 'classification'
             },
             {
-                data: 'has_signature',
-                title: 'Signature'
+                title : 'Signature Present',
+                data: 'has_signature'
             }
         ]
     });
@@ -50,9 +51,7 @@ function submitQuery() {
         contentType: false,
         type: "GET",
         success: function (data) {
-            data = JSON.parse(JSON.stringify(data));
-            populateTable(data)
-
+            populateTable(data);
         },
         error: function (data) {
             alert('ERROR');
@@ -61,5 +60,5 @@ function submitQuery() {
 }
 
 function populateTable(jsonResponse) {
-    table.rows.add(jsonResponse.results).draw();
+    table.clear().rows.add(jsonResponse.results).draw();
 }
