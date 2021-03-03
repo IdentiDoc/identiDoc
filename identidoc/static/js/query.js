@@ -1,11 +1,30 @@
+
+
+$(document).ready(function () {
+    table = $('#queryResultsTable').DataTable({
+        columns: [{
+                data: 'filename',
+                title: 'Uploaded File'
+            },
+            {
+                data: 'classification',
+                title: 'Document Classification'
+            },
+            {
+                data: 'has_signature',
+                title: 'Signature'
+            }
+        ]
+    });
+});
+
 function submitQuery() {
     // Get the values from the form
     var date = document.getElementById('classificationDate').value;
     var docClass = document.getElementById('documentClass').value;
     var sigPresence = document.getElementById('signatureStatus').value;
 
-    if(date == "")
-    {
+    if (date == "") {
         date = "None";
     }
 
@@ -42,4 +61,5 @@ function submitQuery() {
 }
 
 function populateTable(jsonResponse) {
+    table.rows.add(jsonResponse.results).draw();
 }
