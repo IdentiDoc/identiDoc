@@ -21,7 +21,8 @@ $(document).ready(function () {
                 title: 'Uploaded File',
                 data: 'filename',
                 render: function(data, type, row, meta) {
-                    return data;
+                    var filename = String(row.timestamp) + '.' + data;
+                    return '<a href="/api/download/' + filename + '">' + data + '</a>';
                 }
             },
             {
