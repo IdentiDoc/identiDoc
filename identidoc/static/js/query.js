@@ -4,16 +4,60 @@ $(document).ready(function () {
     table = $('#queryResultsTable').DataTable({
         columns: [
             {
+                title: 'Upload Date',
+                data: 'timestamp',
+                // data is a UNIX timestamp
+                render: function(data, type, row, meta) {
+                    var a = new Date(data * 1000);
+                    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    var month = months[a.getMonth()];
+                    var date = a.getDate();
+                    var year = a.getFullYear();0
+
+                    return month + ' ' + String(date) + ', ' + year;
+                }
+            },
+            {
                 title: 'Uploaded File',
-                data: 'filename'
+                data: 'filename',
+                render: function(data, type, row, meta) {
+                    return data;
+                }
             },
             {
                 title: 'Document Classification',
-                data: 'classification'
+                data: 'classification',
+                render: function(data, type, row, meta) {
+                    switch(data)
+                    {
+                        case 1:
+                            return 'Class 1 - Cost of Attendance Adjustment Request';
+                        case 2:
+                            return 'Class 2 - Verification of Household';
+                        case 3:
+                            return 'Class 3 - Verification of Income Student';
+                        case 4:
+                            return 'Class 4 - CPT Academic Advisor Recommendation';
+                        case 5:
+                            return 'Class 5 - CPT Student Information'
+                        case 0:
+                            return 'Unrecognized Document'
+                        default:
+                            return '';
+                    }
+                }
             },
             {
                 title : 'Signature Present',
-                data: 'has_signature'
+                data: 'has_signature',
+                render: function(data, type, row, meta) {
+                    if(data == 0)
+                    {
+                        return 'No Signature Present';
+                    }
+
+                    return 'Signature Present';
+                }
             }
         ]
     });
