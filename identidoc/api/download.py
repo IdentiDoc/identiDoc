@@ -12,6 +12,7 @@ class Download(Resource):
         filepath = os.path.join(PATH_TO_FILE, filename)
 
         if os.path.exists(filepath):
-            return send_file(filepath, as_attachment=True)
+            filename_without_timestamp = filename.split('.', 1)[1]
+            return send_file(filepath, as_attachment=True, attachment_filename=filename_without_timestamp)
 
         return '', 204
