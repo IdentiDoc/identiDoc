@@ -1,8 +1,7 @@
-import math
 import pytz
 import unittest
 
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from identidoc.services import get_current_time_as_POSIX_timestamp, datetime_to_POSIX_timestamp
 
 class TestMiscFunctions(unittest.TestCase):

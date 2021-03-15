@@ -1,7 +1,6 @@
 # This unit test ensures that the identidoc environment is correctly set up.
 # If this unit test fails, the current version of identiDoc should not be deployed.
 
-from identidoc.services.signaturedetection import signature_detection
 import unittest
 import os
 
