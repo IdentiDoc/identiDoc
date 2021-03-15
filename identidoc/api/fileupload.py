@@ -27,6 +27,9 @@ class FileUpload(Resource):
             file.save(saved_filepath)
             
             document_classification, signature_presense = process_uploaded_file(saved_filepath)
+
+            if document_classification is None or signature_presense is None:
+                return { 'message' : 'Database Error. Classification not recorded.' }, 400
             
             return { 'classification' : str(document_classification), 'signature' : str(signature_presense) }, 200
         else:
