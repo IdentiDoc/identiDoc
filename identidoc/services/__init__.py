@@ -15,7 +15,7 @@ def process_uploaded_file(filename):
     doc_class = classify_uploaded_file(filename)
     signature_presence = find_signature(filename)
 
-    return doc_class
+    return doc_class, signature_presence
 
 
 # The function that classifies the uploaded file

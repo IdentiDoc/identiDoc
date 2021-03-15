@@ -26,9 +26,9 @@ class FileUpload(Resource):
 
             file.save(saved_filepath)
             
-            document_classification = process_uploaded_file(saved_filepath)
+            document_classification, signature_presense = process_uploaded_file(saved_filepath)
             
-            return { 'classification' : str(document_classification) }, 200
+            return { 'classification' : str(document_classification), 'signature' : str(signature_presense) }, 200
         else:
             return { 'message' : 'Unsupported file format.' }, 400
 
