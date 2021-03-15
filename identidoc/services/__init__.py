@@ -1,9 +1,12 @@
 # These functions are all intended to be accessed outside of their respective modules
+# SOME OF THEM ARE NOT NEEDED HERE, BUT ARE USED IN OTHER MODULES THAT IMPORT identidoc.services
+# DON'T TOUCH PLEASE
 
 from .preprocessing import preprocess_file, file_conversion
 from .classification import predict_document_class
 from .signaturedetection import signature_detection
-from .database import ClassificationResultTableRow, insert_record_command
+from .database import ClassificationResultTableRow, insert_record_command, retrieve_records_query, validate_database
+from .timehandling import get_current_time_as_POSIX_timestamp
 
 
 # The top level function that triggers all server
@@ -53,7 +56,7 @@ def find_signature(filepath):
 
 # Update Database
 def update_database(filename, classification, signature_presence):
-    record = ClassificationResultTableRow(filename, classification, signature_presence)
+    record = ClassificationResultTableRow(
+        filename, classification, signature_presence)
 
     return insert_record_command(record)
-
