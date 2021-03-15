@@ -4,7 +4,7 @@ import os
 from flask_restful import Resource, request
 from werkzeug.utils import secure_filename
 
-from identidoc.services import get_current_time_as_POSIX_timestamp, classify_uploaded_file
+from identidoc.services import get_current_time_as_POSIX_timestamp, process_uploaded_file
 
 # List of allowed file extensions
 file_extensions=['PDF','PNG','JPG','JPEG','HEIC']
@@ -26,7 +26,7 @@ class FileUpload(Resource):
 
             file.save(saved_filepath)
             
-            document_classification = classify_uploaded_file(saved_filepath)
+            document_classification = process_uploaded_file(saved_filepath)
             
             return { 'classification' : str(document_classification) }, 200
         else:
