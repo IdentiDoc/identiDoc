@@ -10,10 +10,10 @@ if not os.path.exists(TEMP_PATH):
     os.makedirs(TEMP_PATH)
 
 # This function serves as a wrapper function that handles all initial image preprocessing
-# arguments - filename: the path to the input file
+# arguments - filepath: the path to the input file
 # returns - the text extracted from the input file in the correct form to be classified
-def preprocess_file(filename):
-    image = file_conversion(filename)
+def preprocess_file(filepath):
+    image = file_conversion(filepath)
     rotated_image = rotate_image(image)
     processed_image = image_pre_processing(rotated_image)
     extracted_text = tesseract_text_extraction(processed_image)
@@ -65,13 +65,13 @@ def tesseract_text_extraction(image):
 
 
 #This function converts the input file to .png
-def file_conversion(fileName):
-    if fileName.lower().endswith(('.png','.jpg','.jpeg')):
-        image = cv2.imread(fileName)
-    elif fileName.lower().endswith('.pdf'):
-        subprocess.call(["pdftoppm", "-png", fileName, os.path.join(TEMP_PATH, "temp")])
+def file_conversion(filepath):
+    if filepath.lower().endswith(('.png','.jpg','.jpeg')):
+        image = cv2.imread(filepath)
+    elif filepath.lower().endswith('.pdf'):
+        subprocess.call(["pdftoppm", "-png", filepath, os.path.join(TEMP_PATH, "temp")])
         image = cv2.imread(os.path.join(TEMP_PATH, "temp-1.png"))
-    elif fileName.lower().endswith('.heic'):
-        subprocess.call(["heif-convert", fileName, os.path.join(TEMP_PATH, "temp.png")])
+    elif filepath.lower().endswith('.heic'):
+        subprocess.call(["heif-convert", filepath, os.path.join(TEMP_PATH, "temp.png")])
         image = cv2.imread(os.path.join(TEMP_PATH, "temp.png"))
     return image

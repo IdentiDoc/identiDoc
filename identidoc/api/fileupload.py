@@ -4,7 +4,7 @@ import os
 from flask_restful import Resource, request
 from werkzeug.utils import secure_filename
 
-from identidoc.services import get_current_time_as_POSIX_timestamp, classify_uploaded_file
+from identidoc.services import get_current_time_as_POSIX_timestamp, process_uploaded_file
 
 # List of allowed file extensions
 file_extensions=['PDF','PNG','JPG','JPEG','HEIC']
@@ -26,9 +26,12 @@ class FileUpload(Resource):
 
             file.save(saved_filepath)
             
-            document_classification = classify_uploaded_file(saved_filepath)
+            document_classification, signature_presense = process_uploaded_file(saved_filepath)
+
+            if document_classification is None or signature_presense is None:
+                return { 'message' : 'Database Error. Classification not recorded.' }, 400
             
-            return { 'classification' : str(document_classification) }, 200
+            return { 'classification' : str(document_classification), 'signature' : str(signature_presense) }, 200
         else:
             return { 'message' : 'Unsupported file format.' }, 400
 
