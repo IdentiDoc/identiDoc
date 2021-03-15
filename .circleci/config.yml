@@ -15,7 +15,9 @@ jobs:
       - run:
           name: Install Git LFS
           command: |
-            . git_lfs_install.sh
+            curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+            sudo apt install git-lfs
+            git lfs install
       - checkout
       # Setting up the environment necessary for identiDoc to run
       - run:
