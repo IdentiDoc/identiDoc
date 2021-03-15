@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Install Git LFS
           command: |
-          . git_lfs_install.sh
+            . git_lfs_install.sh
       - checkout
       # Setting up the environment necessary for identiDoc to run
       - run:
