@@ -3,6 +3,7 @@ import cv2
 import os
 import subprocess
 
+
 TEMP_PATH= r'/home/kp003/Documents/SENIORDESIGN2/final_model/'
 
 if not os.path.exists(TEMP_PATH):
@@ -25,7 +26,7 @@ outputLayers = [layers_names[i[0]-1] for i in net.getUnconnectedOutLayers()]
 def file_conversion(fileName):
     if fileName.lower().endswith('.pdf'):
         subprocess.call(["pdftoppm", "-png", fileName, os.path.join(TEMP_PATH, "temp")])
-        image = cv2.imread(os.path.join(TEMP_PATH, "temp-1.jpg"))
+        image = cv2.imread(os.path.join(TEMP_PATH, "temp-1.png"))
     elif fileName.lower().endswith('.heic'):
         subprocess.call(["heif-convert", fileName, os.path.join(TEMP_PATH, "temp.jpg")])
         image = cv2.imread(os.path.join(TEMP_PATH, "temp.jpg"))
