@@ -20,6 +20,7 @@ def process_uploaded_file(filepath):
     else:
         signature_presence = find_signature(filepath)
 
+    # Database only stores the filename - We know where the file is stored on the server
     filename = filepath.split('/')[-1]
 
     # Update the database with a classification result
