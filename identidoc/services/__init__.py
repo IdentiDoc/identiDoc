@@ -12,6 +12,7 @@ from .timehandling import get_current_time_as_POSIX_timestamp, datetime_to_POSIX
 # and updating the database
 def process_uploaded_file(filename):
     doc_class = classify_uploaded_file(filename)
+    signature_presence = find_signature(filename)
 
     return doc_class
 
@@ -24,3 +25,8 @@ def classify_uploaded_file(filename):
     doc_class = predict_document_class(extracted_text)
 
     return doc_class
+
+
+# Facilitate all of the signature detection steps
+def find_signature(filename):
+    image = file_conversion(filename)

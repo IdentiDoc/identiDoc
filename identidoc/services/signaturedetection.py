@@ -4,11 +4,7 @@ import os
 import subprocess
 
 
-TEMP_PATH= r'/home/kp003/Documents/SENIORDESIGN2/final_model/'
-
-if not os.path.exists(TEMP_PATH):
-    os.makedirs(TEMP_PATH)
-
+SIGNATURE_DETECTION_PATH = os.environ['IDENTIDOC_SIGNATURE_DETECTION']
 
 #Path to cfg file and trained_weight
 cfgfile="Signature_Detection_model/yolov3_custom.cfg"
