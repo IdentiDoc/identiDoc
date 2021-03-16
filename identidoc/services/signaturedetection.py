@@ -12,6 +12,7 @@ cfgfile = os.path.join(SIGNATURE_DETECTION_PATH, 'yolov3_custom.cfg')
 trained_weights = os.path.join(SIGNATURE_DETECTION_PATH, 'yolov3_custom_final.weights')
 
 # Trying to think of a better way to handle this, for now, this will get past CI pipeline
+# Try to load the signature detection model, if it can't be loaded, just give False
 try:
   #Getting the net object
   net= cv2.dnn.readNet(cfgfile,trained_weights)
