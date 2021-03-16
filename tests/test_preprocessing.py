@@ -3,7 +3,7 @@ from identidoc.services import preprocessing
 
 class TestPreprocessing(unittest.TestCase):
 
-    file_path = 'test_forms/'
+    file_path = 'tests/test_forms/'
     # converted image files
     aa = preprocessing.file_conversion(file_path + 'aa.png')
     coa = preprocessing.file_conversion(file_path + 'coa.png')

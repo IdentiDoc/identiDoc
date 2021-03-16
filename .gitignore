@@ -20,3 +20,5 @@ htmlcov/
 
 #mac custom useless files
 .DS_Store
+
+yolov3_custom_final.weights

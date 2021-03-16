@@ -4,7 +4,7 @@ from identidoc.services import preprocessing
 
 class TestClassification(unittest.TestCase):
 
-    file_path = 'test_forms/'
+    file_path = 'tests/test_forms/'
     # extracted text
     aa = preprocessing.preprocess_file(file_path + 'aa.png')
     coa = preprocessing.preprocess_file(file_path + 'coa.png')
