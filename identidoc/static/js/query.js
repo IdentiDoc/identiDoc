@@ -4,6 +4,8 @@ $(document).ready(function () {
     table = $('#queryResultsTable').DataTable({
         select: false,
         ordering: false,
+        scrollY: '200px',
+        scrollCollapse: true,
         columns: [
             {
                 title: 'Upload Date',
