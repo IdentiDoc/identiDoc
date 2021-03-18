@@ -17,7 +17,7 @@
 
     <div class="header">
         <div class="overlay">
-            <div class="description">
+            <div class="description" style="width: 60%;">
                 <h5 style="font-size: 32px;">Query</h5>
                 <label for="classificationDate">Date</label>
                 <input type="date" id="classificationDate" min="2020-09-01" max="2021-06-01"><br>
@@ -38,6 +38,7 @@
                     <option value="1">Signature Present</option>
                 </select>
                 <input type="button" value="Submit" onclick="submitQuery()"/>
+                <hr>
                 <table class="table" id="queryResultsTable"></table>
             </div>
         </div>
