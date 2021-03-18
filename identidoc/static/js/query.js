@@ -2,6 +2,8 @@
 
 $(document).ready(function () {
     table = $('#queryResultsTable').DataTable({
+        select: false,
+        ordering: false,
         columns: [
             {
                 title: 'Upload Date',
