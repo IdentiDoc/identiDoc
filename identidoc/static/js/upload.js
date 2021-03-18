@@ -28,20 +28,24 @@ $('#uploadForm').submit(function (e) {
       } else if (classification == "5") {
         alertStr = alertStr.concat('an OIE CPT Student Information Form (Class 5)');
       } else {
-        alertStr = alertStr.concat('an unrecognizable document');
+        alertStr = alertStr.concat('an unrecognized document');
       }
 
       alert(alertStr);
 
       if (signature == "True") {
         var alertStr = "The uploaded document has a signature";
+        alert(alertStr);
       } else if (signature == "False") {
         var alertStr = "The uploaded document does not have a signature";
+        alert(alertStr);
+      } else if (signature == "NONE") {
+        // Don't alert on unknown documents
       } else {
         var alertStr = "Signature Detection Error";
+        alert(alertStr);
       }
 
-      alert(alertStr);
     },
     error: function (data) {
       try {

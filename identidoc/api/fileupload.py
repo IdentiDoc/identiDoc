@@ -30,7 +30,11 @@ class FileUpload(Resource):
 
             if document_classification is None or signature_presense is None:
                 return { 'message' : 'Database Error. Classification not recorded.' }, 400
-            
+
+            if document_classification == 0:
+                # Don't run a signature detection on unrecognized documents
+                signature_presense = 'NONE'
+
             return { 'classification' : str(document_classification), 'signature' : str(signature_presense) }, 200
         else:
             return { 'message' : 'Unsupported file format.' }, 400
