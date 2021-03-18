@@ -28,7 +28,7 @@ $('#uploadForm').submit(function (e) {
       } else if (classification == "5") {
         alertStr = alertStr.concat('an OIE CPT Student Information Form (Class 5)');
       } else {
-        alertStr = alertStr.concat('an unrecognizable document');
+        alertStr = alertStr.concat('an unrecognized document');
       }
 
       alert(alertStr);
