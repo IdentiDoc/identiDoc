@@ -35,13 +35,17 @@ $('#uploadForm').submit(function (e) {
 
       if (signature == "True") {
         var alertStr = "The uploaded document has a signature";
+        alert(alertStr);
       } else if (signature == "False") {
         var alertStr = "The uploaded document does not have a signature";
+        alert(alertStr);
+      } else if (signature == "NONE") {
+        // Don't alert on unknown documents
       } else {
         var alertStr = "Signature Detection Error";
+        alert(alertStr);
       }
 
-      alert(alertStr);
     },
     error: function (data) {
       try {

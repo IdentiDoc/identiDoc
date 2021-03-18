@@ -2,6 +2,7 @@
 
 import os
 from flask_restful import Resource, request
+from numpy import sign
 from werkzeug.utils import secure_filename
 
 from identidoc.services import get_current_time_as_POSIX_timestamp, process_uploaded_file
@@ -30,7 +31,11 @@ class FileUpload(Resource):
 
             if document_classification is None or signature_presense is None:
                 return { 'message' : 'Database Error. Classification not recorded.' }, 400
-            
+                
+            if document_classification == 0:
+                # Don't run a signature detection on unrecognized documents
+                signature_presense = 'NONE'
+
             return { 'classification' : str(document_classification), 'signature' : str(signature_presense) }, 200
         else:
             return { 'message' : 'Unsupported file format.' }, 400
