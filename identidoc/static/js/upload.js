@@ -11,7 +11,12 @@ $('#uploadForm').submit(function (e) {
     processData: false,
     contentType: false,
     type: "POST",
+    beforeSend: function () {
+      var spinner = document.getElementById('spinner');
+      spinner.style.visibility = 'visible';
+    },
     success: function (data) {
+      requestReceived();
       var classification = data.classification;
       var signature = data.signature;
 
@@ -44,6 +49,7 @@ $('#uploadForm').submit(function (e) {
       alert(alertStr);
     },
     error: function (data) {
+      requestReceived();
       try {
         alert(data.responseJSON.message);
       } catch (err) {
@@ -59,4 +65,9 @@ function loadFile(event) {
   output.onload = function () {
     URL.revokeObjectURL(output.src) // free memory
   }
+}
+
+function requestReceived() {
+  var spinner = document.getElementById('spinner');
+  spinner.style.visibility = 'hidden';
 }

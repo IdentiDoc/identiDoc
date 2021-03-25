@@ -22,7 +22,7 @@
                 <form id="uploadForm" method="post" enctype="multipart/form-data">
                     <input id="uploadFile" type="file" onchange="loadFile(event)" />
                     <input type="submit" name="submitFileUploadBtn" value="Upload" />
-                    <div class="spinner-border" style="width: 2rem; height: 2rem;" role="status"></div>
+                    <div class="spinner spinner-border" id="spinner" style="width: 2rem; height: 2rem; visibility: hidden;" role="status"></div>
                 </form>
             </div>
         </div>
