@@ -68,6 +68,7 @@ $('#uploadForm').submit(function (e) {
 
 function loadFile(event) {
   var output = document.getElementById('filePreview');
+  output.style.visibility = 'visible';
   output.src = URL.createObjectURL(event.target.files[0]);
   output.onload = function () {
     URL.revokeObjectURL(output.src) // free memory
