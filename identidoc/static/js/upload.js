@@ -14,6 +14,9 @@ $('#uploadForm').submit(function (e) {
     beforeSend: function () {
       var spinner = document.getElementById('spinner');
       spinner.style.visibility = 'visible';
+
+      document.getElementById('uploadFile').disabled = true;
+      document.getElementById('submitFileUploadBtn').disabled = true;
     },
     success: function (data) {
       requestReceived();
@@ -70,4 +73,7 @@ function loadFile(event) {
 function requestReceived() {
   var spinner = document.getElementById('spinner');
   spinner.style.visibility = 'hidden';
+
+  document.getElementById('uploadFile').disabled = false;
+  document.getElementById('submitFileUploadBtn').disabled = false;
 }
