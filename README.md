@@ -32,10 +32,15 @@ identiDoc uses CircleCI to support a robust CI/CD pipeline. Whenever commits are
 
 ### API
 
-The identiDoc API is a RESTful API developed using the Flask-RESTful library. The API has 3 endpoints planned.
-* GET /query - This endpoint sends in parameters for the query which receives classification results. ***PARTIALLY COMPLETED***
-* POST /upload - This endpoint allows the user to upload a file for classification. ***COMPLETE***
-* GET /download - This endpoint will allow the user to download the classified file. ***PLANNED***
+The identiDoc API is a RESTful API developed using the Flask-RESTful library.
+* GET /api/query/\<date\>/\<classification\>/\<signature\>
+*  - This endpoint sends in parameters for the query which receives classification results. The user will receive a JSON response of results in the database.
+*  - date is a string of this form "YYYY-MM-DD" or the string "None"
+*  - classification is a string that is a single number in the range -1 to 5 inclusive. "-1" represents no filtering, "0" is an unrecognized document, and "1" - "5" is the class of the document
+*  - signature is a string equal to "-1", "0", or "1". "-1" represents no filtering, "0" is no signature present, and "1" is a present signature.
+* POST /api/upload - This endpoint allows the user to upload a file for classification.
+* - A file is attached to this request for upload under the header "file"
+* GET /api/download/\<filename\> - This endpoint will allow the user to download the classified file. Note - this endpoint should only be used within a query. A timestamp is necessary to use this endpoint appropriately. See identidoc/static/js/query.js for an example
 
 ### Database
 
