@@ -14,8 +14,6 @@ The identiDoc Development Team consists of the following members
 * *Sandesh Koirala, Developer*
 * *Abhinaw Shahi, Developer*
 
-<!--- TODO - ADD SECTION TO DESCRIBE THE DOCUMENTS THAT ARE IDENTIFIED USING IDENTIDOC -->
-
 ### Environment Setup
 
 identiDoc is written primarily in python3 and utilizes a virtual environment to properly run. The environment is set up by running the setup script with the following command:
@@ -47,3 +45,9 @@ The identiDoc API is a RESTful API developed using the Flask-RESTful library.
 ### Database
 
 sqlite is used for the identiDoc database due to its ease of use and integration within python3. A database module handles all database interactions and honors CQS principles. Data is validated prior to executing the SQL query or command for security purposes.
+
+### Document Preprocessing
+
+### Document Classification
+
+### Signature Detection
