@@ -51,3 +51,5 @@ sqlite is used for the identiDoc database due to its ease of use and integration
 ### Document Classification
 
 ### Signature Detection
+
+identiDoc uses YOLOV3 (You Only Look Once Version 3), a real time object detection system, to detect whether or not a signature is present on a recognized document. Once a document is classified as a recognized document, it is passed to the signature detection module to check for signature presence. If a signature is detected with a confidence value of at least 50%.
