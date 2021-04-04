@@ -68,8 +68,36 @@ $('#uploadForm').submit(function (e) {
 
 function loadFile(event) {
   var output = document.getElementById('filePreview');
+  var selectedFile = event.target.files[0];
+  var filename = selectedFile.name;
+  var fileext = filename.split('.').pop();
+
+  if(fileext == 'heic') {
+    // For heic, convert the file
+    fetch(URL.createObjectURL(selectedFile))
+      .then((res) => res.blob)
+      .then((blob) => heic2any({ 
+        blob,
+        toType: "image/jpeg",
+        quality: 0.5,
+       }))
+       .then((conversionResult) => {
+         alert(conversionResult);
+       })
+       .catch((e) => {
+         alert(e);
+       });
+
+  } else if (fileext == 'pdf') {
+
+  } else {
+
+  }
+
+
+
   output.style.visibility = 'visible';
-  output.src = URL.createObjectURL(event.target.files[0]);
+  output.src = URL.createObjectURL(selectedFile);
   output.onload = function () {
     URL.revokeObjectURL(output.src) // free memory
   }
