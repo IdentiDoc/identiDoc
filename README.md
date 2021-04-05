@@ -48,6 +48,8 @@ sqlite is used for the identiDoc database due to its ease of use and integration
 
 ### Document Preprocessing
 
+Once a document has been uploaded, it is converted into a cv2 image. Then, its orientation is checked. If the orientation is not right, the image is rotated to the correct orientation. The rotated image is converted to a gray-scaled image and then to a final binary image. Finally, the binary image is fed to the python tesseract model and the extracted text is fed into the document classification module.
+
 ### Document Classification
 
 ### Signature Detection
