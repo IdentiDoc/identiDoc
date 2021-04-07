@@ -66,15 +66,53 @@ $('#uploadForm').submit(function (e) {
   });
 });
 
-function loadFile(event) {
+document.getElementById('uploadFile').addEventListener('change', async e => {
+  var file = e.currentTarget.files[0];
+  var filename = file.name.toLowerCase();
+  var fileext = filename.split('.').pop();
+
+  if (fileext == 'heic') {
+    var blob = new Blob([file], {
+      type: 'application/octet-stream'
+    });
+
+    heic2any({
+      blob,
+      toType: "image/jpeg",
+      quality: 0.5,
+      multiple: false
+    }).then((value) => {
+      putImageInDocPreview(URL.createObjectURL(value))
+    }).catch((e) => {
+      alert(e);
+    });
+
+  } else if (fileext == 'pdf') {
+
+  } else {
+    putImageInDocPreview(URL.createObjectURL(file));
+  }
+
+
+
+})
+
+/*
+async function loadFile(event) {
   var output = document.getElementById('filePreview');
-  var selectedFile = event.target.files[0];
+  var selectedFile = document.getElementById('uploadFile').files[0];
   var filename = selectedFile.name;
   var fileext = filename.split('.').pop();
 
   if (fileext == 'heic') {
 
   } else if (fileext == 'pdf') {
+    let convertApi = ConvertApi.auth({
+      secret: 'mR7NDI0iw9pPYFY7'
+    })
+    let params = convertApi.createParams()
+    params.add('file', event.currentTarget.files[0]);
+    let result = await convertApi.convert('pdf', 'jpg', params)
 
   } else {
     output.style.visibility = 'visible';
@@ -85,6 +123,17 @@ function loadFile(event) {
 
   }
 }
+*/
+function putImageInDocPreview(imageUrl) {
+  var docPreview = document.getElementById('filePreview');
+
+  docPreview.style.visibility = 'visible';
+  docPreview.src = imageUrl;
+  docPreview.onload = function () {
+    URL.revokeObjectURL(docPreview.src);
+  }
+}
+
 
 function requestReceived() {
   var spinner = document.getElementById('spinner');

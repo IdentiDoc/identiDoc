@@ -20,7 +20,7 @@
                 <h5 style="font-size: 32px;">File Upload</h5>
                 <img id="filePreview" style="padding: 5%; visibility: hidden;" width="540" height="720">
                 <form id="uploadForm" method="post" enctype="multipart/form-data">
-                    <input id="uploadFile" type="file" onchange="loadFile(event)" />
+                    <input id="uploadFile" type="file">
                     <input type="submit" id="submitFileUploadBtn" name="submitFileUploadBtn" value="Upload" />
                     <div class="spinner spinner-border" id="spinner" style="width: 2rem; height: 2rem; visibility: hidden;" role="status"></div>
                 </form>
@@ -28,7 +28,6 @@
         </div>
     </div>
 
-        <!-- add Javasscript file from js file -->
         <script type="text/javascript" src="/static/js/heic2any.min.js"></script>
         <script type="text/javascript" src="/static/js/jquery.min.js"></script>
         <script type="text/javascript" src="/static/js/popper.min.js"></script>
