@@ -52,6 +52,9 @@ Once a document has been uploaded, it is converted into a cv2 image. Then, its o
 
 ### Document Classification
 
+The text classification subsystem extracts text from the uploaded documents and predicts the document’s class using a pre-trained Machine Learning model.
+The classification model is trained to recognize 5 different kinds of filled forms using a training dataset of about 1000 filled forms of 5 different kinds. A mixture of about 500 additional documents containing different forms, documents, sample driving licenses was used to train the model to recognize the documents that could not be classified into the earlier 5 classes. The performance of several ML algorithms were tested over the collected data in an iterative environment to acquire a model with optimum accuracy. The model using SVM Algorithm was selected as the final model to classify the documents.
+
 ### Signature Detection
 
 identiDoc uses YOLOV3 (You Only Look Once Version 3), a real time object detection system, to detect whether or not a signature is present on a recognized document. Once a document is classified as a recognized document, it is passed to the signature detection module to check for signature presence. If a signature is detected with a confidence value of at least 50%.
