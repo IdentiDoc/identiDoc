@@ -88,7 +88,11 @@ document.getElementById('uploadFile').addEventListener('change', async e => {
     });
 
   } else if (fileext == 'pdf') {
-
+    var fileURL = URL.createObjectURL(file);
+    var loadingTask = pdfjsLib.getDocument(fileURL);
+    loadingTask.promise.then(function(pdf) {
+      alert('success');
+    });
   } else {
     putImageInDocPreview(URL.createObjectURL(file));
   }
