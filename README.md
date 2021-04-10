@@ -14,8 +14,6 @@ The identiDoc Development Team consists of the following members
 * *Sandesh Koirala, Developer*
 * *Abhinaw Shahi, Developer*
 
-<!--- TODO - ADD SECTION TO DESCRIBE THE DOCUMENTS THAT ARE IDENTIFIED USING IDENTIDOC -->
-
 ### Environment Setup
 
 identiDoc is written primarily in python3 and utilizes a virtual environment to properly run. The environment is set up by running the setup script with the following command:
@@ -32,11 +30,31 @@ identiDoc uses CircleCI to support a robust CI/CD pipeline. Whenever commits are
 
 ### API
 
-The identiDoc API is a RESTful API developed using the Flask-RESTful library. The API has 3 endpoints planned.
-* GET /query - This endpoint sends in parameters for the query which receives classification results. ***PARTIALLY COMPLETED***
-* POST /upload - This endpoint allows the user to upload a file for classification. ***COMPLETE***
-* GET /download - This endpoint will allow the user to download the classified file. ***PLANNED***
+The identiDoc API is a RESTful API developed using the Flask-RESTful library.
+* GET /api/query/\<date\>/\<classification\>/\<signature\>
+-- This endpoint sends in parameters for the query which receives classification results. The user will receive a JSON response of results in the database.
+-- date is a string of this form "YYYY-MM-DD" or the string "None"
+-- classification is a string that is a single number in the range -1 to 5 inclusive. "-1" represents no filtering, "0" is an unrecognized document, and "1" - "5" is the class of the document
+-- signature is a string equal to "-1", "0", or "1". "-1" represents no filtering, "0" is no signature present, and "1" is a present signature.
+
+* POST /api/upload - This endpoint allows the user to upload a file for classification.
+-- A file is attached to this request for upload under the header "file"
+
+* GET /api/download/\<filename\> - This endpoint will allow the user to download the classified file. Note - this endpoint should only be used within a query. A timestamp is necessary to use this endpoint appropriately. See identidoc/static/js/query.js for an example
 
 ### Database
 
 sqlite is used for the identiDoc database due to its ease of use and integration within python3. A database module handles all database interactions and honors CQS principles. Data is validated prior to executing the SQL query or command for security purposes.
+
+### Document Preprocessing
+
+Once a document has been uploaded, it is converted into a cv2 image. Then, its orientation is checked. If the orientation is not right, the image is rotated to the correct orientation. The rotated image is converted to a gray-scaled image and then to a final binary image. Finally, the binary image is fed to the python tesseract model and the extracted text is fed into the document classification module.
+
+### Document Classification
+
+The text classification subsystem extracts text from the uploaded documents and predicts the document’s class using a pre-trained Machine Learning model.
+The classification model is trained to recognize 5 different kinds of filled forms using a training dataset of about 1000 filled forms of 5 different kinds. A mixture of about 500 additional documents containing different forms, documents, sample driving licenses was used to train the model to recognize the documents that could not be classified into the earlier 5 classes. The performance of several ML algorithms were tested over the collected data in an iterative environment to acquire a model with optimum accuracy. The model using SVM Algorithm was selected as the final model to classify the documents.
+
+### Signature Detection
+
+identiDoc uses YOLOV3 (You Only Look Once Version 3), a real time object detection system, to detect whether or not a signature is present on a recognized document. Once a document is classified as a recognized document, it is passed to the signature detection module to check for signature presence. If a signature is detected with a confidence value of at least 50%.
