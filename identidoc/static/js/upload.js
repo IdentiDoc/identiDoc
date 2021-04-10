@@ -91,7 +91,37 @@ document.getElementById('uploadFile').addEventListener('change', async e => {
     var fileURL = URL.createObjectURL(file);
     var loadingTask = pdfjsLib.getDocument(fileURL);
     loadingTask.promise.then(function(pdf) {
-      alert('success');
+
+      // Only be concerned with the first page of the pdf
+      pdf.getPage(1).then(function(page) {
+        var scale = 1.5;
+
+        var viewport = page.getViewport({ scale: scale, });
+
+        var invisibleCanvas = document.createElement('canvas');
+
+        // Not sure if this is required, but better safe than sorry
+        invisibleCanvas.style.visibility = 'hidden';
+
+        var context = invisibleCanvas.getContext('2d');
+        
+        invisibleCanvas.height = viewport.height;
+        invisibleCanvas.width = viewport.width;
+
+        
+
+        var renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+        
+        var renderTask = page.render(renderContext);
+
+        renderTask.promise.then(function() {
+          var imageURL = invisibleCanvas.toDataURL("image/jpeg", 1.0);
+          putImageInDocPreview(imageURL);
+        });
+      });
     });
   } else {
     putImageInDocPreview(URL.createObjectURL(file));
