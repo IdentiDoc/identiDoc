@@ -66,14 +66,108 @@ $('#uploadForm').submit(function (e) {
   });
 });
 
-function loadFile(event) {
+document.getElementById('uploadFile').addEventListener('change', async e => {
+  var file = e.currentTarget.files[0];
+  var filename = file.name.toLowerCase();
+  var fileext = filename.split('.').pop();
+
+  if (fileext == 'heic') {
+    var blob = new Blob([file], {
+      type: 'application/octet-stream'
+    });
+
+    heic2any({
+      blob,
+      toType: "image/jpeg",
+      quality: 0.5,
+      multiple: false
+    }).then((value) => {
+      putImageInDocPreview(URL.createObjectURL(value))
+    }).catch((e) => {
+      alert(e);
+    });
+
+  } else if (fileext == 'pdf') {
+    var fileURL = URL.createObjectURL(file);
+    var loadingTask = pdfjsLib.getDocument(fileURL);
+    loadingTask.promise.then(function(pdf) {
+
+      // Only be concerned with the first page of the pdf
+      pdf.getPage(1).then(function(page) {
+        var scale = 1.5;
+
+        var viewport = page.getViewport({ scale: scale, });
+
+        var invisibleCanvas = document.createElement('canvas');
+
+        // Not sure if this is required, but better safe than sorry
+        invisibleCanvas.style.visibility = 'hidden';
+
+        var context = invisibleCanvas.getContext('2d');
+        
+        invisibleCanvas.height = viewport.height;
+        invisibleCanvas.width = viewport.width;
+
+        
+
+        var renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+        
+        var renderTask = page.render(renderContext);
+
+        renderTask.promise.then(function() {
+          var imageURL = invisibleCanvas.toDataURL("image/jpeg", 1.0);
+          putImageInDocPreview(imageURL);
+        });
+      });
+    });
+  } else {
+    putImageInDocPreview(URL.createObjectURL(file));
+  }
+
+
+
+})
+
+/*
+async function loadFile(event) {
   var output = document.getElementById('filePreview');
-  output.style.visibility = 'visible';
-  output.src = URL.createObjectURL(event.target.files[0]);
-  output.onload = function () {
-    URL.revokeObjectURL(output.src) // free memory
+  var selectedFile = document.getElementById('uploadFile').files[0];
+  var filename = selectedFile.name;
+  var fileext = filename.split('.').pop();
+
+  if (fileext == 'heic') {
+
+  } else if (fileext == 'pdf') {
+    let convertApi = ConvertApi.auth({
+      secret: 'mR7NDI0iw9pPYFY7'
+    })
+    let params = convertApi.createParams()
+    params.add('file', event.currentTarget.files[0]);
+    let result = await convertApi.convert('pdf', 'jpg', params)
+
+  } else {
+    output.style.visibility = 'visible';
+    output.src = URL.createObjectURL(selectedFile);
+    output.onload = function () {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+
   }
 }
+*/
+function putImageInDocPreview(imageUrl) {
+  var docPreview = document.getElementById('filePreview');
+
+  docPreview.style.visibility = 'visible';
+  docPreview.src = imageUrl;
+  docPreview.onload = function () {
+    URL.revokeObjectURL(docPreview.src);
+  }
+}
+
 
 function requestReceived() {
   var spinner = document.getElementById('spinner');
