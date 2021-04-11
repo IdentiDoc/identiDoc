@@ -4,6 +4,8 @@ identiDoc is a Senior Design Project for The University of Texas at Arlington fo
 
 identiDoc uses the Flask framework.
 
+Live demonstration: https://www.youtube.com/watch?v=TMaXMLexpe4
+
 ### Team Members
 
 The identiDoc Development Team consists of the following members
