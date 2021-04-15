@@ -3,6 +3,15 @@ import pytesseract
 import re
 import subprocess
 import os
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('punkt')
+stopwords=set(stopwords.words("english"))
+regex_pat = re.compile(r'[^a-zA-Z\s]', flags=re.IGNORECASE)
 
 TEMP_PATH = os.environ['IDENTIDOC_TEMP_PATH']
 
@@ -19,8 +28,11 @@ def preprocess_file(filepath):
     extracted_text = tesseract_text_extraction(processed_image)
 
     extracted_text = extracted_text.replace('\n', ' ')
+    #remove stopwords,lemmatize and convert to  lowercase
+    extracted_text=remove_stopwords(extracted_text)
 
     # This returns the extracted text in the form that is classifiable
+
     return extracted_text
 
 
@@ -55,6 +67,18 @@ def image_pre_processing(image):
     #convert the grayscaled image to binary image
     final_image= cv2.threshold(gray_image,0,255,cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
     return final_image
+
+def remove_stopwords(sentence):
+    lemmatizer = WordNetLemmatizer()
+    processed_sent=''
+    temp_sent=word_tokenize(sentence)
+    for word in temp_sent:
+        word= word.lower()
+        word = lemmatizer.lemmatize(word)
+        if word not in stopwords:
+            if not regex_pat.search(word):
+                processed_sent=processed_sent+" "+word
+    return processed_sent
 
 
 # This function extracts text from the pre-processed image
