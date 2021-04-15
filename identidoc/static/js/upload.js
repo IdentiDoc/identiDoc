@@ -101,7 +101,7 @@ document.getElementById('uploadFile').addEventListener('change', async e => {
         var invisibleCanvas = document.createElement('canvas');
 
         // Not sure if this is required, but better safe than sorry
-        invisibleCanvas.style.visibility = 'hidden';
+        invisibleCanvas.style.display = 'none';
 
         var context = invisibleCanvas.getContext('2d');
         
@@ -160,8 +160,8 @@ async function loadFile(event) {
 */
 function putImageInDocPreview(imageUrl) {
   var docPreview = document.getElementById('filePreview');
-
-  docPreview.style.visibility = 'visible';
+  docPreview.style.clear='both';
+  docPreview.style.display = 'block';
   docPreview.src = imageUrl;
   docPreview.onload = function () {
     URL.revokeObjectURL(docPreview.src);
