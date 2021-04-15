@@ -5,6 +5,7 @@ import subprocess
 
 
 SIGNATURE_DETECTION_PATH = os.environ['IDENTIDOC_SIGNATURE_DETECTION']
+TEMP_PATH = os.environ['IDENTIDOC_TEMP_PATH']
 
 
 # Path to cfg file and trained_weight
@@ -48,7 +49,7 @@ def signature_detection(image):
                 center_y = int(detect[1] * height)
                 w = int(detect[2] * width)
                 h = int(detect[3] * height)
-                x = int(center_x - w/ 2)
+                x = int(center_x - w / 2)
                 y = int(center_y - h / 2)
                 # draw bounding box rectangle around the detecetd signature
                 image = cv2.rectangle(
@@ -57,8 +58,10 @@ def signature_detection(image):
                 image = cv2.putText(image, "Signature", (x, y),
                                     cv2.FONT_ITALIC, 2, (0, 0, 255), 8)
                 # save the predicted image
-                cv2.imwrite('yolo_prediction.jpg', image)
+                cv2.imwrite(os.path.join(
+                    TEMP_PATH, 'yolo_prediction.jpg'), image)
 
                 return (True)
 
+    cv2.imwrite(os.path.join(TEMP_PATH, 'yolo_prediction.jpg'), image)
     return (False)
