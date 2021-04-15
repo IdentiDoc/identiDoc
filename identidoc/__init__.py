@@ -37,6 +37,10 @@ def load_upload_file_page():
 def load_query_page():
     return render_template('query.html')
 
+@app.route('/result')
+def load_result_page():
+    return render_template('result.html')
+
 
 # Runs identiDoc locally
 if __name__ == '__main__':
