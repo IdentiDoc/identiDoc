@@ -170,8 +170,9 @@ async function loadFile(event) {
 */
 function putImageInDocPreview(imageUrl) {
   var docPreview = document.getElementById('filePreview');
-
+  docPreview.style.clear='both';
   docPreview.style.visibility = 'visible';
+  
   docPreview.src = imageUrl;
   docPreview.onload = function () {
     URL.revokeObjectURL(docPreview.src);
