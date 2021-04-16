@@ -1,6 +1,8 @@
 # RESTful API Resource for file uploads
 
+from inspect import signature
 import os
+from flask.templating import render_template
 from flask_restful import Resource, request
 from werkzeug.utils import secure_filename
 
