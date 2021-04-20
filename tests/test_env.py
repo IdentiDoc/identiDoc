@@ -12,9 +12,11 @@ class TestEnv(unittest.TestCase):
         db_path = os.environ.get('IDENTIDOC_DB', 'ERROR')
         classification_models = os.environ.get('IDENTIDOC_CLASSIFICATION_MODELS', 'ERROR')
         signature_detection = os.environ.get('IDENTIDOC_SIGNATURE_DETECTION', 'ERROR')
+        yolo_prediction_image = os.environ.get('IDENTIDOC_SIGNATURE_BOUNDING_BOX', 'ERROR')
 
         assert upload_path != 'ERROR'
         assert temp_path != 'ERROR'
         assert db_path != 'ERROR'
         assert classification_models != 'ERROR'
         assert signature_detection != 'ERROR'
+        assert yolo_prediction_image != 'ERROR'

@@ -29,6 +29,7 @@ then
     echo -e 'export IDENTIDOC_TEMP_PATH=${HOME}/identidoc_temp/\n' >> identidoc_venv/bin/activate
     echo -e 'export IDENTIDOC_CLASSIFICATION_MODELS=${VIRTUAL_ENV}/../identidoc/services/classification_model/\n' >> identidoc_venv/bin/activate
     echo -e 'export IDENTIDOC_SIGNATURE_DETECTION=${VIRTUAL_ENV}/../identidoc/services/signature_detection_model/\n' >> identidoc_venv/bin/activate
+    echo -e 'export IDENTIDOC_SIGNATURE_BOUNDING_BOX=${VIRTUAL_ENV}/../identidoc/static/img/yolo_prediction.jpg\n' >> identidoc_venv/bin/activate
 
 else
     echo 'Virtual Environment Detected'
