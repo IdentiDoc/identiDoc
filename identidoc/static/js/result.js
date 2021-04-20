@@ -21,7 +21,7 @@ $(document).ready(function () {
     if (signature == "True") {
         alertStr += ' with a signature.';
     } else if (signature == "False") {
-        alertStr += 'without a signature.';
+        alertStr += ' without a signature.';
     }
 
     alert(alertStr);
