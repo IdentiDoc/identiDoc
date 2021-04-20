@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    var docPreview = document.getElementById('filePreview');
+
+    docPreview.src = '/static/img/yolo_prediction.jpg?' + new Date().getTime();
+
     var classification = sessionStorage.getItem('classification');
     var signature = sessionStorage.getItem('signature');
 
@@ -24,5 +28,5 @@ $(document).ready(function () {
         alertStr += ' without a signature.';
     }
 
-    alert(alertStr);
+    //alert(alertStr);
 });
