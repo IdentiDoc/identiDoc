@@ -21,49 +21,9 @@ $('#uploadForm').submit(function (e) {
     success: function (data) {
       requestReceived();
 
-      var redirect = function(url, method) {
-        var form = document.createElement('form');
-        document.body.append(form);
-        form.method = method;
-        form.action = url;
-        form.data = data;
-        form.submit();
-    };
+      stashResults(data);
 
-      redirect('/result', 'GET');
-
-      /*
-      // Redirect to the result page
-      location.window.href = "/result";
-
-      var classification = data.classification;
-      var signature = data.signature;
-
-      var alertStr = 'The uploaded document was classified as '
-
-      if (classification == "1") {
-        alertStr = alertStr.concat('a 2021-2022 Cost of Attendance (COA) Adjustment Request Form (Class 1)');
-      } else if (classification == "2") {
-        alertStr = alertStr.concat('a 2021-2022 Verification of Household Form (Class 2)');
-      } else if (classification == "3") {
-        alertStr = alertStr.concat('a 2021-2022 Verification of Income - Student Form (Class 3)');
-      } else if (classification == "4") {
-        alertStr = alertStr.concat('an OIE CPT Academic Advisor Recommendation Form (Class 4)');
-      } else if (classification == "5") {
-        alertStr = alertStr.concat('an OIE CPT Student Information Form (Class 5)');
-      } else {
-        alertStr = alertStr.concat('an unrecognized document.');
-      }
-
-      if (signature == "True") {
-        alertStr += ' with a signature.';
-      } else if (signature == "False") {
-        alertStr += 'without a signature.';
-      }
-
-      window.classificationResult.innerHTML = alertStr;
-    */
-
+      location.href = '/result';
     },
     error: function (data) {
       requestReceived();
@@ -75,6 +35,16 @@ $('#uploadForm').submit(function (e) {
     }
   });
 });
+
+
+function stashResults(data) {
+
+  var classification = data.classification;
+  var signature = data.signature;
+
+  sessionStorage.setItem('classification', classification);
+  sessionStorage.setItem('signature', signature);
+}
 
 document.getElementById('uploadFile').addEventListener('change', async e => {
   var file = e.currentTarget.files[0];
@@ -100,13 +70,15 @@ document.getElementById('uploadFile').addEventListener('change', async e => {
   } else if (fileext == 'pdf') {
     var fileURL = URL.createObjectURL(file);
     var loadingTask = pdfjsLib.getDocument(fileURL);
-    loadingTask.promise.then(function(pdf) {
+    loadingTask.promise.then(function (pdf) {
 
       // Only be concerned with the first page of the pdf
-      pdf.getPage(1).then(function(page) {
+      pdf.getPage(1).then(function (page) {
         var scale = 1.5;
 
-        var viewport = page.getViewport({ scale: scale, });
+        var viewport = page.getViewport({
+          scale: scale,
+        });
 
         var invisibleCanvas = document.createElement('canvas');
 
@@ -114,20 +86,20 @@ document.getElementById('uploadFile').addEventListener('change', async e => {
         invisibleCanvas.style.visibility = 'hidden';
 
         var context = invisibleCanvas.getContext('2d');
-        
+
         invisibleCanvas.height = viewport.height;
         invisibleCanvas.width = viewport.width;
 
-        
+
 
         var renderContext = {
           canvasContext: context,
           viewport: viewport
         };
-        
+
         var renderTask = page.render(renderContext);
 
-        renderTask.promise.then(function() {
+        renderTask.promise.then(function () {
           var imageURL = invisibleCanvas.toDataURL("image/jpeg", 1.0);
           putImageInDocPreview(imageURL);
         });
@@ -136,43 +108,13 @@ document.getElementById('uploadFile').addEventListener('change', async e => {
   } else {
     putImageInDocPreview(URL.createObjectURL(file));
   }
-
-
-
 })
 
-/*
-async function loadFile(event) {
-  var output = document.getElementById('filePreview');
-  var selectedFile = document.getElementById('uploadFile').files[0];
-  var filename = selectedFile.name;
-  var fileext = filename.split('.').pop();
-
-  if (fileext == 'heic') {
-
-  } else if (fileext == 'pdf') {
-    let convertApi = ConvertApi.auth({
-      secret: 'mR7NDI0iw9pPYFY7'
-    })
-    let params = convertApi.createParams()
-    params.add('file', event.currentTarget.files[0]);
-    let result = await convertApi.convert('pdf', 'jpg', params)
-
-  } else {
-    output.style.visibility = 'visible';
-    output.src = URL.createObjectURL(selectedFile);
-    output.onload = function () {
-      URL.revokeObjectURL(output.src) // free memory
-    }
-
-  }
-}
-*/
 function putImageInDocPreview(imageUrl) {
   var docPreview = document.getElementById('filePreview');
-  docPreview.style.clear='both';
+  docPreview.style.clear = 'both';
   docPreview.style.visibility = 'visible';
-  
+
   docPreview.src = imageUrl;
   docPreview.onload = function () {
     URL.revokeObjectURL(docPreview.src);
