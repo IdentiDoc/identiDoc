@@ -1,6 +1,6 @@
 # RESTful API Resource for file uploads
 
-import os
+import os 
 from flask_restful import Resource, request
 from werkzeug.utils import secure_filename
 
@@ -10,6 +10,7 @@ from identidoc.services import get_current_time_as_POSIX_timestamp, process_uplo
 file_extensions=['PDF','PNG','JPG','JPEG','HEIC']
 
 UPLOAD_PATH = os.environ['IDENTIDOC_UPLOAD_PATH']
+TEMP_PATH = os.environ['IDENTIDOC_TEMP_PATH']
 
 if not os.path.exists(UPLOAD_PATH):
     os.makedirs(UPLOAD_PATH)
@@ -35,7 +36,7 @@ class FileUpload(Resource):
                 # Don't run a signature detection on unrecognized documents
                 signature_presense = 'NONE'
 
-            return { 'classification' : str(document_classification), 'signature' : str(signature_presense) }, 200
+            return {'classification': str(document_classification), 'signature': str(signature_presense) }, 200
         else:
             return { 'message' : 'Unsupported file format.' }, 400
 

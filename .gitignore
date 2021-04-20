@@ -22,3 +22,6 @@ htmlcov/
 .DS_Store
 
 yolov3_custom_final.weights
+
+# .jpg file that has the signature bounding box
+yolo_prediction.jpg
