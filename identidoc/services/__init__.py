@@ -17,11 +17,7 @@ def process_uploaded_file(filepath):
     # Get the classification of the document
     doc_class = classify_uploaded_file(filepath)
 
-    # Don't look for a signature if the document is not recognized
-    if doc_class == 0:
-        signature_presence = False
-    else:
-        signature_presence = find_signature(filepath)
+    signature_presence = find_signature(filepath)
 
     # Database only stores the filename - We know where the file is stored on the server
     filename = filepath.split('/')[-1]
