@@ -41,7 +41,6 @@ function stashResults(data) {
 
   var classification = data.classification;
   var signature = data.signature;
-  var datastr = data.file;
 
   sessionStorage.setItem('classification', classification);
   sessionStorage.setItem('signature', signature);

@@ -36,13 +36,7 @@ class FileUpload(Resource):
                 # Don't run a signature detection on unrecognized documents
                 signature_presense = 'NONE'
 
-            try:
-                filepath = os.path.join(TEMP_PATH, 'yolo_prediction.jpg')
-                file_data = open(filepath, 'rb').read()
-            except:
-                file_data = ''
-
-            return {'classification': str(document_classification), 'signature': str(signature_presense), 'file': str(file_data) }, 200
+            return {'classification': str(document_classification), 'signature': str(signature_presense) }, 200
         else:
             return { 'message' : 'Unsupported file format.' }, 400
 
