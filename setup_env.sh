@@ -31,6 +31,9 @@ then
     echo -e 'export IDENTIDOC_SIGNATURE_DETECTION=${VIRTUAL_ENV}/../identidoc/services/signature_detection_model/\n' >> identidoc_venv/bin/activate
     echo -e 'export IDENTIDOC_SIGNATURE_BOUNDING_BOX=${VIRTUAL_ENV}/../identidoc/static/img/yolo_prediction.jpg\n' >> identidoc_venv/bin/activate
 
+    # Download the signature detection file
+    wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1PedlslgPRH4FvT0_ir6yp1SCO1Mr5Fis' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1PedlslgPRH4FvT0_ir6yp1SCO1Mr5Fis" -O ./identidoc/services/signature_detection_model/yolov3_custom_final.weights && rm -rf /tmp/cookies.txt
+
 else
     echo 'Virtual Environment Detected'
 fi
